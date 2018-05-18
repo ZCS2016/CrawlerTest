@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean:beans xmlns="http://www.springframework.org/schema/batch"
+       xmlns:bean="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/batch
+                           http://www.springframework.org/schema/batch/spring-batch.xsd">
+    <bean:import resource="job-context.xml"/>
+
+    <job id="crawlerJob">
+        <step id="linuxWallpaperStep">
+            <tasklet transaction-manager="transactionManager">
+                <chunk reader="linuxWallpaperReader"
+                       processor="linuxWallpaperProcesser"
+                       writer="linuxWallpaperWriter"
+                       commit-interval="1">
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean:bean id="linuxWallpaperReader"
+               class="com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.reader.LinuxWallpaperReader"/>
+
+    <bean:bean id="linuxWallpaperProcesser"
+               class="com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.processor.LinuxWallpaperProcessor"/>
+
+    <bean:bean id="linuxWallpaperWriter"
+               class="com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.writer.LinuxWallpaperWriter"/>
+
+
+
+</bean:beans>
