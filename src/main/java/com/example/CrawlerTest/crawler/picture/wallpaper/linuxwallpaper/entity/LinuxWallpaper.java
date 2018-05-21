@@ -4,6 +4,14 @@ public class LinuxWallpaper {
     private String title;
     private String src;
 
+    public LinuxWallpaper() {
+    }
+
+    public LinuxWallpaper(String title, String src) {
+        this.title = title;
+        this.src = src;
+    }
+
     public String getTitle() {
         return title;
     }
