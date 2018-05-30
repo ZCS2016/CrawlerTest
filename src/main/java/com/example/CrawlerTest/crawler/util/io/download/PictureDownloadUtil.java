@@ -22,7 +22,7 @@ public class PictureDownloadUtil {
             //伪装成google的爬虫JAVA问题查询
             httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
             // Execute HTTP request
-            System.out.println("executing request " + httpget.getURI());
+            //System.out.println("executing request " + httpget.getURI());
             HttpResponse response = httpclient.execute(httpget);
 
             File storeFile = new File(filePathName);

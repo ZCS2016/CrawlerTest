@@ -20,7 +20,7 @@ public class PictureDownloadService {
             URL url=new URL(urlStr);
             FileUtils.copyURLToFile(url,localFile);
         } catch (IOException e) {
-            System.out.println(urlStr+"\t"+"copyURLToFile failed!");
+            //System.out.println(urlStr+"\t"+"copyURLToFile failed!");
             PictureDownloadUtil.download(urlStr,filePathName);
         }
     }
