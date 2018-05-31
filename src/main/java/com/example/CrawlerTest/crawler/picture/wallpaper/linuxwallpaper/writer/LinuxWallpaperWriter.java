@@ -14,7 +14,7 @@ public class LinuxWallpaperWriter implements ItemWriter<LinuxWallpaper> {
             String title = linuxWallpaper.getTitle();
             String fileType = src.substring(src.lastIndexOf("."));
             title += fileType;
-            PictureDownloadService.downloadPicture(src,title,"PIC");
+            PictureDownloadService.downloadPicture(src,title,"img/linux");
         }
     }
 }
