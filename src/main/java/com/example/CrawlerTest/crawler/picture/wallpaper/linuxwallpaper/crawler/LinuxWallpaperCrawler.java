@@ -20,8 +20,29 @@ public class LinuxWallpaperCrawler {
     public List<LinuxWallpaper> getLinuxWallpaperList(){
         List<LinuxWallpaper> linuxWallpaperList = new ArrayList<>();
 
+        final int pageNumber = 5;
+        String[] urls = new String[pageNumber];
+        urls[0] = "https://www.linuxidc.com/Linuxwallpaper/";
+        for(int i=1;i<pageNumber;i++) {
+            urls[i] = "https://www.linuxidc.com/Linuxwallpaper/indexp" + (i+1) + ".htm";
+        }
+
         WebDriver driver = seleniumService.getDriver();
-        driver.get("https://www.linuxidc.com/Linuxwallpaper/");
+
+        for(int i=0;i<pageNumber;i++) {
+            List<LinuxWallpaper> pageLinuxWallpaperList = getPageLinuxWallpaperList(driver,urls[i]);
+            linuxWallpaperList.addAll(pageLinuxWallpaperList);
+        }
+
+        driver.close();
+
+        return linuxWallpaperList;
+    }
+
+    private List<LinuxWallpaper> getPageLinuxWallpaperList(WebDriver driver,String url) {
+        List<LinuxWallpaper> linuxWallpaperList = new ArrayList<>();
+
+        driver.get(url);
         List<WebElement> imgElementList = driver.findElements(By.className("imgLink"));
         for(WebElement imgElement:imgElementList){
             String title = imgElement.getText();
@@ -30,7 +51,6 @@ public class LinuxWallpaperCrawler {
 
             linuxWallpaperList.add(new LinuxWallpaper(title,src));
         }
-        driver.close();
 
         return linuxWallpaperList;
     }
