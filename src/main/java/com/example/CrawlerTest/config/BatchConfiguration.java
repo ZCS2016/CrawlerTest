@@ -1,5 +1,9 @@
 package com.example.CrawlerTest.config;
 
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor.GameWallpaperProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.processor.LinuxWallpaperProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.reader.LinuxWallpaperReader;
@@ -44,38 +48,84 @@ public class BatchConfiguration {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
+    //Jobs
+    /////////////////////////////////////////////////////////////////////
+    //LinuxWallpaper
+
+//    @Bean
+//    public LinuxWallpaperReader linuxWallpaperReader() {
+//        return new LinuxWallpaperReader();
+//    }
+//
+//    @Bean
+//    public LinuxWallpaperProcessor linuxWallpaperProcessor(){
+//        return new LinuxWallpaperProcessor();
+//    }
+//
+//    @Bean
+//    public LinuxWallpaperWriter linuxWallpaperWriter(){
+//        return new LinuxWallpaperWriter();
+//    }
+
+//    @Bean
+//    public Step linuxWallpaperJobStep(){
+//        return stepBuilderFactory.get("linuxWallpaperJobStep")
+//                .<LinuxWallpaper,LinuxWallpaper>chunk(1)
+//                .reader(linuxWallpaperReader())
+//                .processor(linuxWallpaperProcessor())
+//                .writer(linuxWallpaperWriter())
+//                .build();
+//    }
+//
+//    @Bean
+//    public Job linuxWallpaperJob(Step linuxWallpaperJobStep){
+//        return jobBuilderFactory.get("linuxWallpaperJob")
+//                .incrementer(new RunIdIncrementer())
+//                .flow(linuxWallpaperJobStep)
+//                .end()
+//                .build();
+//    }
+    /////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////
+    //GameWallpaper
+
     @Bean
-    public LinuxWallpaperReader linuxWallpaperReader() {
-        return new LinuxWallpaperReader();
+    public GameWallpaperReader gameWallpaperReader(){
+        return new GameWallpaperReader();
     }
 
     @Bean
-    public LinuxWallpaperProcessor linuxWallpaperProcessor(){
-        return new LinuxWallpaperProcessor();
+    public GameWallpaperProcessor gameWallpaperProcessor(){
+        return new GameWallpaperProcessor();
     }
 
     @Bean
-    public LinuxWallpaperWriter linuxWallpaperWriter(){
-        return new LinuxWallpaperWriter();
+    public GameWallpaperWriter gameWallpaperWriter(){
+        return new GameWallpaperWriter();
     }
 
     @Bean
-    public Job crawlerJob(Step crawlerJobStep){
-        return jobBuilderFactory.get("crawlerJob")
+    public Step gameWallpaperJobStep(){
+        return stepBuilderFactory.get("gameWallpaperJobStep")
+                .<GameWallpaper,GameWallpaper>chunk(1)
+                .reader(gameWallpaperReader())
+                .processor(gameWallpaperProcessor())
+                .writer(gameWallpaperWriter())
+                .build();
+    }
+
+    @Bean
+    public Job gameWallpaperJob(Step gameWallpaperJobStep){
+        return jobBuilderFactory.get("gameWallpaperJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(crawlerJobStep)
+                .flow(gameWallpaperJobStep)
                 .end()
                 .build();
     }
 
-    @Bean
-    public Step crawlerJobStep(){
-        return stepBuilderFactory.get("crawlerJobStep")
-                .<LinuxWallpaper,LinuxWallpaper>chunk(1)
-                .reader(linuxWallpaperReader())
-                .processor(linuxWallpaperProcessor())
-                .writer(linuxWallpaperWriter())
-                .build();
-    }
     /////////////////////////////////////////////////////////////////////
+
 }
