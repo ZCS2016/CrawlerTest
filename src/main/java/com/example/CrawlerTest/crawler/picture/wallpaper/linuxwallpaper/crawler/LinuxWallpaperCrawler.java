@@ -1,6 +1,7 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.crawler;
 
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
+import com.example.CrawlerTest.crawler.util.codec.SHAUtil;
 import com.example.CrawlerTest.crawler.util.selenium.SeleniumService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -49,7 +50,12 @@ public class LinuxWallpaperCrawler {
             WebElement aElement = imgElement.findElement(By.tagName("img"));
             String src =aElement.getAttribute("src");
 
-            linuxWallpaperList.add(new LinuxWallpaper(title,src));
+            LinuxWallpaper linuxWallpaper = new LinuxWallpaper();
+            linuxWallpaper.setTitle(title);
+            linuxWallpaper.setSrc(src);
+            String hash = SHAUtil.getSHA256Str(src);
+            linuxWallpaper.setHash(hash);
+            linuxWallpaperList.add(linuxWallpaper);
         }
 
         return linuxWallpaperList;

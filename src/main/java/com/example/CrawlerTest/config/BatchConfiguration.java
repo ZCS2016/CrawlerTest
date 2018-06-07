@@ -66,7 +66,7 @@ public class BatchConfiguration {
 //    public LinuxWallpaperWriter linuxWallpaperWriter(){
 //        return new LinuxWallpaperWriter();
 //    }
-
+//
 //    @Bean
 //    public Step linuxWallpaperJobStep(){
 //        return stepBuilderFactory.get("linuxWallpaperJobStep")

@@ -4,6 +4,7 @@ public class GameWallpaper {
     private String id;
     private String title;
     private String src;
+    private String hash;
 
     public String getId() {
         return id;
@@ -27,5 +28,13 @@ public class GameWallpaper {
 
     public void setSrc(String src) {
         this.src = src;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }

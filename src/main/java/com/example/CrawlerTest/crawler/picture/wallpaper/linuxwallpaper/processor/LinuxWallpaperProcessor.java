@@ -12,11 +12,9 @@ public class LinuxWallpaperProcessor implements ItemProcessor<LinuxWallpaper,Lin
 
     @Override
     public LinuxWallpaper process(LinuxWallpaper linuxWallpaper) throws Exception {
-        String id = SHAUtil.getSHA256Str(linuxWallpaper.getSrc());
-        linuxWallpaper.setId(id);
 
         System.out.println("--------------------------------------------------------------");
-        System.out.println(linuxWallpaper.getId()+"\t"+linuxWallpaper.getTitle()+"\t"+linuxWallpaper.getSrc());
+        System.out.println(linuxWallpaper.getTitle()+"\t"+linuxWallpaper.getSrc()+"\t"+linuxWallpaper.getHash());
         System.out.println("--------------------------------------------------------------");
 
         try {

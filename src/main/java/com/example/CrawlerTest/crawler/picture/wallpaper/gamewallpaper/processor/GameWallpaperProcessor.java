@@ -13,11 +13,9 @@ public class GameWallpaperProcessor implements ItemProcessor<GameWallpaper,GameW
 
     @Override
     public GameWallpaper process(GameWallpaper gameWallpaper) throws Exception {
-        String id = SHAUtil.getSHA256Str(gameWallpaper.getSrc());
-        gameWallpaper.setId(id);
 
         System.out.println("--------------------------------------------------------------");
-        System.out.println(gameWallpaper.getId()+"\t"+gameWallpaper.getTitle()+"\t"+gameWallpaper.getSrc());
+        System.out.println(gameWallpaper.getTitle()+"\t"+gameWallpaper.getSrc()+"\t"+gameWallpaper.getHash());
         System.out.println("--------------------------------------------------------------");
 
         try {

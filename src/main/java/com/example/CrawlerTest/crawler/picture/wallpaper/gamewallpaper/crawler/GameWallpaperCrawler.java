@@ -2,6 +2,7 @@ package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.crawler;
 
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
+import com.example.CrawlerTest.crawler.util.codec.SHAUtil;
 import com.example.CrawlerTest.crawler.util.selenium.SeleniumService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -52,7 +53,8 @@ public class GameWallpaperCrawler {
             GameWallpaper gameWallpaper = new GameWallpaper();
             gameWallpaper.setTitle(title);
             gameWallpaper.setSrc(src);
-
+            String hash = SHAUtil.getSHA256Str(src);
+            gameWallpaper.setHash(hash);
             gameWallpaperList.add(gameWallpaper);
         }
 

@@ -4,14 +4,7 @@ public class LinuxWallpaper {
     private String id;
     private String title;
     private String src;
-
-    public LinuxWallpaper() {
-    }
-
-    public LinuxWallpaper(String title, String src) {
-        this.title = title;
-        this.src = src;
-    }
+    private String hash;
 
     public String getId() {
         return id;
@@ -35,5 +28,13 @@ public class LinuxWallpaper {
 
     public void setSrc(String src) {
         this.src = src;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }
