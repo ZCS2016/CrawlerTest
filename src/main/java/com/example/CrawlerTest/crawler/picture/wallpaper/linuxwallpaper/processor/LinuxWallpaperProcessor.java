@@ -1,5 +1,6 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.processor;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.dao.LinuxWallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
 import com.example.CrawlerTest.crawler.util.codec.SHAUtil;
@@ -18,7 +19,12 @@ public class LinuxWallpaperProcessor implements ItemProcessor<LinuxWallpaper,Lin
         System.out.println("--------------------------------------------------------------");
 
         try {
-            linuxWallpaperMapper.insert(linuxWallpaper);
+            Integer count = linuxWallpaperMapper.selectCount(new EntityWrapper<LinuxWallpaper>().eq("hash",linuxWallpaper.getHash()));
+            if(count==0) {
+                linuxWallpaperMapper.insert(linuxWallpaper);
+            }else{
+                System.out.println("LinuxWallpaper exists!");
+            }
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }

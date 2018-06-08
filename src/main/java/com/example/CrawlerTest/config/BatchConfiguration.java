@@ -52,39 +52,39 @@ public class BatchConfiguration {
     /////////////////////////////////////////////////////////////////////
     //LinuxWallpaper
 
-//    @Bean
-//    public LinuxWallpaperReader linuxWallpaperReader() {
-//        return new LinuxWallpaperReader();
-//    }
-//
-//    @Bean
-//    public LinuxWallpaperProcessor linuxWallpaperProcessor(){
-//        return new LinuxWallpaperProcessor();
-//    }
-//
-//    @Bean
-//    public LinuxWallpaperWriter linuxWallpaperWriter(){
-//        return new LinuxWallpaperWriter();
-//    }
-//
-//    @Bean
-//    public Step linuxWallpaperJobStep(){
-//        return stepBuilderFactory.get("linuxWallpaperJobStep")
-//                .<LinuxWallpaper,LinuxWallpaper>chunk(1)
-//                .reader(linuxWallpaperReader())
-//                .processor(linuxWallpaperProcessor())
-//                .writer(linuxWallpaperWriter())
-//                .build();
-//    }
-//
-//    @Bean
-//    public Job linuxWallpaperJob(Step linuxWallpaperJobStep){
-//        return jobBuilderFactory.get("linuxWallpaperJob")
-//                .incrementer(new RunIdIncrementer())
-//                .flow(linuxWallpaperJobStep)
-//                .end()
-//                .build();
-//    }
+    @Bean
+    public LinuxWallpaperReader linuxWallpaperReader() {
+        return new LinuxWallpaperReader();
+    }
+
+    @Bean
+    public LinuxWallpaperProcessor linuxWallpaperProcessor(){
+        return new LinuxWallpaperProcessor();
+    }
+
+    @Bean
+    public LinuxWallpaperWriter linuxWallpaperWriter(){
+        return new LinuxWallpaperWriter();
+    }
+
+    @Bean
+    public Step linuxWallpaperJobStep(){
+        return stepBuilderFactory.get("linuxWallpaperJobStep")
+                .<LinuxWallpaper,LinuxWallpaper>chunk(1)
+                .reader(linuxWallpaperReader())
+                .processor(linuxWallpaperProcessor())
+                .writer(linuxWallpaperWriter())
+                .build();
+    }
+
+    @Bean
+    public Job linuxWallpaperJob(Step linuxWallpaperJobStep){
+        return jobBuilderFactory.get("linuxWallpaperJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(linuxWallpaperJobStep)
+                .end()
+                .build();
+    }
     /////////////////////////////////////////////////////////////////////
 
 
@@ -92,39 +92,39 @@ public class BatchConfiguration {
     /////////////////////////////////////////////////////////////////////
     //GameWallpaper
 
-    @Bean
-    public GameWallpaperReader gameWallpaperReader(){
-        return new GameWallpaperReader();
-    }
-
-    @Bean
-    public GameWallpaperProcessor gameWallpaperProcessor(){
-        return new GameWallpaperProcessor();
-    }
-
-    @Bean
-    public GameWallpaperWriter gameWallpaperWriter(){
-        return new GameWallpaperWriter();
-    }
-
-    @Bean
-    public Step gameWallpaperJobStep(){
-        return stepBuilderFactory.get("gameWallpaperJobStep")
-                .<GameWallpaper,GameWallpaper>chunk(1)
-                .reader(gameWallpaperReader())
-                .processor(gameWallpaperProcessor())
-                .writer(gameWallpaperWriter())
-                .build();
-    }
-
-    @Bean
-    public Job gameWallpaperJob(Step gameWallpaperJobStep){
-        return jobBuilderFactory.get("gameWallpaperJob")
-                .incrementer(new RunIdIncrementer())
-                .flow(gameWallpaperJobStep)
-                .end()
-                .build();
-    }
+//    @Bean
+//    public GameWallpaperReader gameWallpaperReader(){
+//        return new GameWallpaperReader();
+//    }
+//
+//    @Bean
+//    public GameWallpaperProcessor gameWallpaperProcessor(){
+//        return new GameWallpaperProcessor();
+//    }
+//
+//    @Bean
+//    public GameWallpaperWriter gameWallpaperWriter(){
+//        return new GameWallpaperWriter();
+//    }
+//
+//    @Bean
+//    public Step gameWallpaperJobStep(){
+//        return stepBuilderFactory.get("gameWallpaperJobStep")
+//                .<GameWallpaper,GameWallpaper>chunk(1)
+//                .reader(gameWallpaperReader())
+//                .processor(gameWallpaperProcessor())
+//                .writer(gameWallpaperWriter())
+//                .build();
+//    }
+//
+//    @Bean
+//    public Job gameWallpaperJob(Step gameWallpaperJobStep){
+//        return jobBuilderFactory.get("gameWallpaperJob")
+//                .incrementer(new RunIdIncrementer())
+//                .flow(gameWallpaperJobStep)
+//                .end()
+//                .build();
+//    }
 
     /////////////////////////////////////////////////////////////////////
 

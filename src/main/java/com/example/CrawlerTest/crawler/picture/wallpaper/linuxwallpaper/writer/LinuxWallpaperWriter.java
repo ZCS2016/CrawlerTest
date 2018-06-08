@@ -9,12 +9,12 @@ import java.util.List;
 public class LinuxWallpaperWriter implements ItemWriter<LinuxWallpaper> {
     @Override
     public void write(List<? extends LinuxWallpaper> list) throws Exception {
-        for(LinuxWallpaper linuxWallpaper:list){
-            String src = linuxWallpaper.getSrc();
-            String title = linuxWallpaper.getTitle();
-            String fileType = src.substring(src.lastIndexOf("."));
-            title += fileType;
-            PictureDownloadService.downloadPicture(src,title,"img/linux");
-        }
+//        for(LinuxWallpaper linuxWallpaper:list){
+//            String src = linuxWallpaper.getSrc();
+//            String title = linuxWallpaper.getTitle();
+//            String fileType = src.substring(src.lastIndexOf("."));
+//            title += fileType;
+//            PictureDownloadService.downloadPicture(src,title,"img/linux");
+//        }
     }
 }

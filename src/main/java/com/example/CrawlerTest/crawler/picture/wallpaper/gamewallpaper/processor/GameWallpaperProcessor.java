@@ -1,5 +1,6 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.util.codec.SHAUtil;
@@ -19,7 +20,12 @@ public class GameWallpaperProcessor implements ItemProcessor<GameWallpaper,GameW
         System.out.println("--------------------------------------------------------------");
 
         try {
-            gameWallpaperMapper.insert(gameWallpaper);
+            Integer count = gameWallpaperMapper.selectCount(new EntityWrapper<GameWallpaper>().eq("hash",gameWallpaper.getHash()));
+            if(count==0) {
+                gameWallpaperMapper.insert(gameWallpaper);
+            }else{
+                System.out.println("LinuxWallpaper exists!");
+            }
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }

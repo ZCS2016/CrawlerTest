@@ -10,13 +10,13 @@ public class GameWallpaperWriter implements ItemWriter<GameWallpaper> {
 
     @Override
     public void write(List<? extends GameWallpaper> list) throws Exception {
-        for(GameWallpaper gameWallpaper:list){
-            String src = gameWallpaper.getSrc();
-            String title = gameWallpaper.getTitle();
-            String fileType = src.substring(src.lastIndexOf("."));
-            title += fileType;
-            PictureDownloadService.downloadPicture(src,title,"img/game");
-        }
+//        for(GameWallpaper gameWallpaper:list){
+//            String src = gameWallpaper.getSrc();
+//            String title = gameWallpaper.getTitle();
+//            String fileType = src.substring(src.lastIndexOf("."));
+//            title += fileType;
+//            PictureDownloadService.downloadPicture(src,title,"img/game");
+//        }
     }
 
 }
