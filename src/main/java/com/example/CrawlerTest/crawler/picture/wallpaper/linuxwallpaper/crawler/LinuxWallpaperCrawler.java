@@ -49,12 +49,13 @@ public class LinuxWallpaperCrawler {
             String title = imgElement.getText();
             WebElement aElement = imgElement.findElement(By.tagName("img"));
             String src =aElement.getAttribute("src");
+            String hash = SHAUtil.getSHA256Str(src);
 
             LinuxWallpaper linuxWallpaper = new LinuxWallpaper();
             linuxWallpaper.setTitle(title);
             linuxWallpaper.setSrc(src);
-            String hash = SHAUtil.getSHA256Str(src);
             linuxWallpaper.setHash(hash);
+
             linuxWallpaperList.add(linuxWallpaper);
         }
 

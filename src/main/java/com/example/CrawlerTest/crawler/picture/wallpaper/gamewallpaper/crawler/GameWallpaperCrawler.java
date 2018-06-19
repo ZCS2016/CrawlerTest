@@ -49,12 +49,13 @@ public class GameWallpaperCrawler {
         for(WebElement imgElement:imgElementList){
             String src = imgElement.getAttribute("src");
             String title = src.substring(src.lastIndexOf("/")+1,src.lastIndexOf(".jpg"));
+            String hash = SHAUtil.getSHA256Str(src);
 
             GameWallpaper gameWallpaper = new GameWallpaper();
             gameWallpaper.setTitle(title);
             gameWallpaper.setSrc(src);
-            String hash = SHAUtil.getSHA256Str(src);
             gameWallpaper.setHash(hash);
+
             gameWallpaperList.add(gameWallpaper);
         }
 
