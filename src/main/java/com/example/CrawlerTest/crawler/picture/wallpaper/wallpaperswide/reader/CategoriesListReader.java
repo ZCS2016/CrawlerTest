@@ -30,7 +30,7 @@ public class CategoriesListReader implements ItemReader<Categories> {
 
     @Override
     public Categories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-//        synchronized(categoriesList) {
+        synchronized(categoriesList) {
             ////////////////////////////////////
             CrawlerJob categoriesJob = crawlerJobMapper.selectById("categoriesListJob");
             ////////////////////////////////////
@@ -70,8 +70,9 @@ public class CategoriesListReader implements ItemReader<Categories> {
                 System.out.println(Thread.currentThread().getName()+"/t read: \t"+null);
 
                 count = 0;
+                categoriesList.clear();
                 return null;
             }
-//        }
+        }
     }
 }
