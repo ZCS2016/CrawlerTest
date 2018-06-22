@@ -15,30 +15,21 @@ public class CategoriesWriter implements ItemWriter<Categories> {
 
     @Override
     public void write(List<? extends Categories> categoriesList) throws Exception {
-//        synchronized (categoriesList) {
-            for (Categories categories : categoriesList) {
-
-                System.out.println(Thread.currentThread().getName()+"\t write: \t"+categories.getId());
-
-                for (Categories childrenCategories : categories.getChildrenCategories()) {
-//                    System.out.println("--------------------------------------------------------------");
-//                    System.out.println(childrenCategories.getLevel() + "\t" + childrenCategories.getTitle() + "\t" + childrenCategories.getSrc() + "\t" + childrenCategories.getCount() + "\t" + childrenCategories.getHash());
-
-                    try {
-                        Integer count = categoriesMapper.selectCount(new EntityWrapper<Categories>().eq("hash", childrenCategories.getHash()));
-                        if (count == 0) {
-                            categoriesMapper.insert(childrenCategories);
-                        } else {
-                            System.out.println("Wallpaperswide_Categories exists!");
-                        }
-                    } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
+        for (Categories categories : categoriesList) {
+            System.out.println(Thread.currentThread().getName()+"\t write: \t"+categories.getId());
+            for (Categories childrenCategories : categories.getChildrenCategories()) {
+                try {
+                    Integer count = categoriesMapper.selectCount(new EntityWrapper<Categories>().eq("hash", childrenCategories.getHash()));
+                    if (count == 0) {
+                        categoriesMapper.insert(childrenCategories);
+                    } else {
+                        System.out.println("Wallpaperswide_Categories" + childrenCategories.getTitle() + "exists!");
                     }
-
-//                    System.out.println("--------------------------------------------------------------");
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
                 }
             }
-//        }
+        }
     }
 
 }

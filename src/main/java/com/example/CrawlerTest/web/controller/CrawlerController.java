@@ -3,6 +3,7 @@ package com.example.CrawlerTest.web.controller;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.example.CrawlerTest.web.dao.CrawlerJobMapper;
 import com.example.CrawlerTest.web.entity.CrawlerJob;
+import com.example.CrawlerTest.web.service.CrawlerJobService;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -27,6 +28,9 @@ import java.util.List;
 @RequestMapping("/api/Crawler")
 @CrossOrigin(origins = "*")
 public class CrawlerController {
+    @Autowired
+    private CrawlerJobService crawlerJobService;
+
     @Autowired
     private CrawlerJobMapper crawlerJobMapper;
 
@@ -79,15 +83,7 @@ public class CrawlerController {
     public String categoriesList(){
 
         try {
-            ////////////////////////////////////
-            CrawlerJob categoriesListCrawlerJob = crawlerJobMapper.selectById("categoriesListJob");
-            categoriesListCrawlerJob.setStatus("Running");
-            categoriesListCrawlerJob.setRunning(true);
-            categoriesListCrawlerJob.setStartTime(LocalDateTime.now());
-            categoriesListCrawlerJob.setLastUpdate(LocalDateTime.now());
-            crawlerJobMapper.updateById(categoriesListCrawlerJob);
-            ////////////////////////////////////
-
+            crawlerJobService.startCategoriesListJob();
             jobLauncher.run(categoriesListJob,jobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
