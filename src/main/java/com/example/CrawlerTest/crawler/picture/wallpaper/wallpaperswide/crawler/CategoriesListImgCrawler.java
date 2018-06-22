@@ -19,10 +19,6 @@ import java.util.List;
 
 @Component
 public class CategoriesListImgCrawler {
-    ////////////////////////////////////
-    @Autowired
-    private CrawlerJobMapper crawlerJobMapper;
-    ////////////////////////////////////
 
     @Autowired
     private SeleniumService seleniumService;
@@ -30,39 +26,16 @@ public class CategoriesListImgCrawler {
     @Autowired
     CategoriesMapper categoriesMapper;
 
-    public List<Categories> getCategoriesListImg(List<Categories> categories){
+    public List<Categories> getCategoriesListImg(Categories rootCategories){
         List<Categories> categoriesList = new ArrayList<>();
 
-        ////////////////////////////////////
-        CrawlerJob categoriesJob = crawlerJobMapper.selectById("categoriesListImgJob");
-        categoriesJob.setStatus("Running");
-        categoriesJob.setRunning(true);
-        categoriesJob.setStartTime(LocalDateTime.now());
-        categoriesJob.setLastUpdate(LocalDateTime.now());
-        categoriesJob.setTotal(categories.size());
-        crawlerJobMapper.updateById(categoriesJob);
-        ////////////////////////////////////
+
         WebDriver driver = seleniumService.getDriver();
 
-        for(int i=0; i < categories.size(); i++ ){
-            Categories category = categories.get(i);
-            List<Categories> pageCategoriesList = getPageCategoriesListImg(driver, category);
-            categoriesList.addAll(pageCategoriesList);
+        List<Categories> pageCategoriesList = getPageCategoriesListImg(driver, rootCategories);
+        categoriesList.addAll(pageCategoriesList);
 
-            ////////////////////////////////////
-            categoriesJob.setCurrent(i+1);
-            categoriesJob.setLastUpdate(LocalDateTime.now());
-            crawlerJobMapper.updateById(categoriesJob);
-            ////////////////////////////////////
-        }
-
-        ////////////////////////////////////
-        categoriesJob.setStatus("Complete");
-        categoriesJob.setRunning(false);
-        categoriesJob.setEndTime(LocalDateTime.now());
-        categoriesJob.setLastUpdate(LocalDateTime.now());
-        crawlerJobMapper.updateById(categoriesJob);
-        ////////////////////////////////////
+        seleniumService.returnDriver(driver);
 
         return categoriesList;
     }

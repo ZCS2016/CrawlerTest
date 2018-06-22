@@ -13,16 +13,15 @@ import java.util.List;
 
 public class CategoriesReader implements ItemReader<Categories> {
 
-    @Autowired
-    CategoriesCrawler categoriesCrawler;
-
     private int count = 0;
     private List<Categories> categoriesList = new ArrayList<>();
 
     @Override
     public Categories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if(categoriesList.isEmpty()){
-            categoriesList.addAll(categoriesCrawler.getCategoriesList());
+            Categories rootCategories = new Categories();
+            rootCategories.setSrc("http://wallpaperswide.com/");
+            categoriesList.add(rootCategories);
         }
 
         if(!categoriesList.isEmpty()&&count<categoriesList.size()){

@@ -26,7 +26,7 @@ public class CategoriesCrawler {
     @Autowired
     private SeleniumService seleniumService;
 
-    public List<Categories> getCategoriesList(){
+    public List<Categories> getCategoriesList(Categories rootCategories){
         List<Categories> categoriesList = new ArrayList<>();
 
         ////////////////////////////////////
@@ -38,7 +38,7 @@ public class CategoriesCrawler {
         crawlerJobMapper.updateById(categoriesJob);
         ////////////////////////////////////
 
-        final String baseUrl = "http://wallpaperswide.com/";
+        final String baseUrl = rootCategories.getSrc();
         WebDriver driver = seleniumService.getDriver();
         driver.get(baseUrl);
 
@@ -72,14 +72,10 @@ public class CategoriesCrawler {
             categoriesJob.setCurrent(categoriesList.size());
             categoriesJob.setLastUpdate(LocalDateTime.now());
             crawlerJobMapper.updateById(categoriesJob);
-
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             ////////////////////////////////////
         }
+
+        seleniumService.returnDriver(driver);
 
         ////////////////////////////////////
         categoriesJob.setStatus("Complete");

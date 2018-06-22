@@ -1,6 +1,10 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @TableName("wallpaperswide_categories")
 public class Categories {
@@ -12,6 +16,8 @@ public class Categories {
     private Integer level;
     private Integer parentId;
     private String hash;
+    @TableField(exist = false)
+    private List<Categories> childrenCategories = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -75,5 +81,13 @@ public class Categories {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public List<Categories> getChildrenCategories() {
+        return childrenCategories;
+    }
+
+    public void setChildrenCategories(List<Categories> childrenCategories) {
+        this.childrenCategories = childrenCategories;
     }
 }

@@ -9,12 +9,19 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.processo
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.reader.LinuxWallpaperReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.writer.LinuxWallpaperWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.entity.Categories;
+import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.CategoriesListImgProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.CategoriesListProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.CategoriesProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.CategoriesListImgReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.CategoriesListReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.CategoriesReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.writer.CategoriesWriter;
 import com.example.CrawlerTest.crawler.util.selenium.SeleniumService;
+import com.example.CrawlerTest.crawler.util.selenium.WebDriverFactory;
+import com.example.CrawlerTest.web.service.CrawlerJobService;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.openqa.selenium.WebDriver;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -32,6 +39,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.IOException;
 import java.util.Date;
@@ -42,11 +51,36 @@ public class BatchConfiguration {
     /////////////////////////////////////////////////////////////////////
     //Selenium WebDriver
     @Bean
+    public WebDriverFactory getWebDriverFactory(){
+        WebDriverFactory webDriverFactory = new WebDriverFactory();
+        WebDriverFactory.createAndStartService();
+        return webDriverFactory;
+    }
+
+    @Bean
+    public GenericObjectPoolConfig getWebDriverPoolConfig(){
+        GenericObjectPoolConfig webDriverPoolConfig = new GenericObjectPoolConfig();
+        return webDriverPoolConfig;
+    }
+
+    @Bean
+    public GenericObjectPool<WebDriver> getWebDriverPool(WebDriverFactory webDriverFactory,GenericObjectPoolConfig webDriverPoolConfig){
+        GenericObjectPool<WebDriver> webDriverPool = new GenericObjectPool<WebDriver>(webDriverFactory,webDriverPoolConfig);
+        return webDriverPool;
+    }
+
+    @Bean
     public SeleniumService getSeleniumService(){
         SeleniumService seleniumService = new SeleniumService();
-        SeleniumService.createAndStartService();
         return seleniumService;
     }
+
+    @Bean
+    public CrawlerJobService getCrawlerJobService(){
+        CrawlerJobService crawlerJobService = new CrawlerJobService();
+        return crawlerJobService;
+    }
+
     /////////////////////////////////////////////////////////////////////
 
 
@@ -60,6 +94,13 @@ public class BatchConfiguration {
 
     @Autowired
     public JobRepository jobRepository;
+
+    @Bean
+    public TaskExecutor getTaskExecutor(){
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(2);
+        return taskExecutor;
+    };
 
     @Bean
     public JobLauncher jobLauncher() throws Exception {
@@ -174,6 +215,16 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public CategoriesListProcessor categoriesListProcessor(){
+        return new CategoriesListProcessor();
+    }
+
+    @Bean
+    public CategoriesListImgProcessor categoriesListImgProcessor(){
+        return new CategoriesListImgProcessor();
+    }
+
+    @Bean
     public CategoriesWriter categoriesWriter(){
         return new CategoriesWriter();
     }
@@ -199,12 +250,13 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step categoriesListJobStep(){
+    public Step categoriesListJobStep(TaskExecutor taskExecutor){
         return stepBuilderFactory.get("categoriesListJobStep")
                 .<Categories,Categories>chunk(1)
                 .reader(categoriesListReader())
-                .processor(categoriesProcessor())
+                .processor(categoriesListProcessor())
                 .writer(categoriesWriter())
+                .taskExecutor(taskExecutor)
                 .build();
     }
 
@@ -222,7 +274,7 @@ public class BatchConfiguration {
         return stepBuilderFactory.get("categoriesListImgJobStep")
                 .<Categories,Categories>chunk(1)
                 .reader(categoriesListImgReader())
-                .processor(categoriesProcessor())
+                .processor(categoriesListImgProcessor())
                 .writer(categoriesWriter())
                 .build();
     }

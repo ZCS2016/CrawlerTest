@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +79,15 @@ public class CrawlerController {
     public String categoriesList(){
 
         try {
+            ////////////////////////////////////
+            CrawlerJob categoriesListCrawlerJob = crawlerJobMapper.selectById("categoriesListJob");
+            categoriesListCrawlerJob.setStatus("Running");
+            categoriesListCrawlerJob.setRunning(true);
+            categoriesListCrawlerJob.setStartTime(LocalDateTime.now());
+            categoriesListCrawlerJob.setLastUpdate(LocalDateTime.now());
+            crawlerJobMapper.updateById(categoriesListCrawlerJob);
+            ////////////////////////////////////
+
             jobLauncher.run(categoriesListJob,jobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
