@@ -16,9 +16,7 @@ public class CategoriesListProcessor implements ItemProcessor<Categories,Categor
 
     @Override
     public Categories process(Categories rootCategories) throws Exception {
-
         System.out.println(Thread.currentThread().getName()+"\t process: \t"+rootCategories.getId());
-
         List<Categories> childrenCategories = categoriesListCrawler.getCategoriesList(rootCategories);
         rootCategories.setChildrenCategories(childrenCategories);
         return rootCategories;

@@ -13,9 +13,10 @@ public class CategoriesListImgProcessor implements ItemProcessor<Categories,Cate
     CategoriesListImgCrawler categoriesListImgCrawler;
 
     @Override
-    public Categories process(Categories categories) throws Exception {
-        categoriesListImgCrawler.getCategoriesListImg(categories);
-        return categories;
+    public Categories process(Categories rootCategories) throws Exception {
+        System.out.println(Thread.currentThread().getName()+"\t process: \t"+rootCategories.getId());
+        categoriesListImgCrawler.getCategoriesListImg(rootCategories);
+        return rootCategories;
     }
 
 }

@@ -72,6 +72,10 @@ public class CategoriesListCrawler {
             categories.setLevel(level);
             categories.setParentId(category.getId());
             categories.setHash(hash);
+            categories.setRunning(false);
+            categories.setStatus("Stop");
+            categories.setCurrent(0);
+            categories.setTotal(0);
 
             categoriesList.add(categories);
         }

@@ -36,6 +36,7 @@ public class WebDriverFactory extends BasePooledObjectFactory<WebDriver> {
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> preferences = new HashMap<String, Object>();
         preferences.put("profile.default_content_setting_values.images",2);
+        preferences.put("profile.default_content_setting_values.javascript",2);
         options.setExperimentalOption("prefs",preferences);
         WebDriver driver = new RemoteWebDriver(service.getUrl(), options);
         return driver;

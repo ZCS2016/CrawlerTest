@@ -24,7 +24,7 @@ public class CategoriesListReader implements ItemReader<Categories> {
 
     @Override
     public Categories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        Categories categories = crawlerJobService.readCategoriesList();
+        Categories categories = crawlerJobService.readRootCategories("categoriesListJob");
         System.out.println(Thread.currentThread().getName()+"/t read: \t"+(categories==null?null:categories.getId()));
         return categories;
     }

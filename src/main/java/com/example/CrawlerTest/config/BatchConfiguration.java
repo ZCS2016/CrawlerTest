@@ -60,6 +60,7 @@ public class BatchConfiguration {
     @Bean
     public GenericObjectPoolConfig getWebDriverPoolConfig(){
         GenericObjectPoolConfig webDriverPoolConfig = new GenericObjectPoolConfig();
+        webDriverPoolConfig.setMaxTotal(8);
         return webDriverPoolConfig;
     }
 
@@ -98,7 +99,7 @@ public class BatchConfiguration {
     @Bean
     public TaskExecutor getTaskExecutor(){
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(2);
+        taskExecutor.setCorePoolSize(8);
         return taskExecutor;
     };
 
@@ -270,12 +271,13 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step categoriesListImgJobStep(){
+    public Step categoriesListImgJobStep(TaskExecutor taskExecutor){
         return stepBuilderFactory.get("categoriesListImgJobStep")
                 .<Categories,Categories>chunk(1)
                 .reader(categoriesListImgReader())
                 .processor(categoriesListImgProcessor())
                 .writer(categoriesWriter())
+                .taskExecutor(taskExecutor)
                 .build();
     }
 

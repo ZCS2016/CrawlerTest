@@ -83,7 +83,7 @@ public class CrawlerController {
     public String categoriesList(){
 
         try {
-            crawlerJobService.startCategoriesListJob();
+            crawlerJobService.startJob("categoriesListJob");
             jobLauncher.run(categoriesListJob,jobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
@@ -102,6 +102,7 @@ public class CrawlerController {
     public String categoriesListImg(){
 
         try {
+            crawlerJobService.startJob("categoriesListImgJob");
             jobLauncher.run(categoriesListImgJob,jobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
