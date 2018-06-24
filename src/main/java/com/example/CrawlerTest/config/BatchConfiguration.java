@@ -12,10 +12,13 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.entity.C
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.CategoriesListImgProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.CategoriesListProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.CategoriesProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.processor.WallpaperListProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.CategoriesListImgReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.CategoriesListReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.CategoriesReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.WallpaperListReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.writer.CategoriesWriter;
+import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.writer.WallpaperWriter;
 import com.example.CrawlerTest.crawler.util.selenium.SeleniumService;
 import com.example.CrawlerTest.crawler.util.selenium.WebDriverFactory;
 import com.example.CrawlerTest.web.service.CrawlerJobService;
@@ -154,7 +157,7 @@ public class BatchConfiguration {
 
 
     /////////////////////////////////////////////////////////////////////
-    //GameWallpaper
+    //Wallpaper
 
 //    @Bean
 //    public GameWallpaperReader gameWallpaperReader(){
@@ -174,7 +177,7 @@ public class BatchConfiguration {
 //    @Bean
 //    public Step gameWallpaperJobStep(){
 //        return stepBuilderFactory.get("gameWallpaperJobStep")
-//                .<GameWallpaper,GameWallpaper>chunk(1)
+//                .<Wallpaper,Wallpaper>chunk(1)
 //                .reader(gameWallpaperReader())
 //                .processor(gameWallpaperProcessor())
 //                .writer(gameWallpaperWriter())
@@ -211,6 +214,11 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public WallpaperListReader wallpaperListReader(){
+        return new WallpaperListReader();
+    }
+
+    @Bean
     public CategoriesProcessor categoriesProcessor(){
         return new CategoriesProcessor();
     }
@@ -226,8 +234,18 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public WallpaperListProcessor wallpaperListProcessor(){
+        return new WallpaperListProcessor();
+    }
+
+    @Bean
     public CategoriesWriter categoriesWriter(){
         return new CategoriesWriter();
+    }
+
+    @Bean
+    public WallpaperWriter wallpaperWriter(){
+        return new WallpaperWriter();
     }
 
 
@@ -286,6 +304,26 @@ public class BatchConfiguration {
         return jobBuilderFactory.get("categoriesListImgJob")
                 .incrementer(new RunIdIncrementer())
                 .flow(categoriesListImgJobStep)
+                .end()
+                .build();
+    }
+
+    @Bean
+    public Step wallpaperListJobStep(TaskExecutor taskExecutor){
+        return stepBuilderFactory.get("wallpaperListJobStep")
+                .<Categories,Categories>chunk(1)
+                .reader(wallpaperListReader())
+                .processor(wallpaperListProcessor())
+                .writer(wallpaperWriter())
+                .taskExecutor(taskExecutor)
+                .build();
+    }
+
+    @Bean
+    public Job wallpaperListJob(Step wallpaperListJobStep){
+        return jobBuilderFactory.get("wallpaperListJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(wallpaperListJobStep)
                 .end()
                 .build();
     }

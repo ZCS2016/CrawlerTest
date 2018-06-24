@@ -49,6 +49,10 @@ public class CrawlerController {
     @Qualifier("categoriesListImgJob")
     private Job categoriesListImgJob;
 
+    @Autowired
+    @Qualifier("wallpaperListJob")
+    private Job wallpaperListJob;
+
     @RequestMapping("/jobs")
     public List<CrawlerJob> getJobs(){
         List<CrawlerJob> jobs = crawlerJobMapper.selectList(new EntityWrapper<CrawlerJob>());
@@ -115,6 +119,25 @@ public class CrawlerController {
         }
 
         return "categoriesListImg Done!";
+    }
+
+    @RequestMapping("/run/wallpaperListJob/{categoriesId}")
+    public String wallpaperListJob(@PathVariable Integer categoriesId){
+
+        try {
+            crawlerJobService.startJob("wallpaperListJob",categoriesId);
+            jobLauncher.run(wallpaperListJob,jobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
+
+        return "wallpaperListJob Done!";
     }
 
 

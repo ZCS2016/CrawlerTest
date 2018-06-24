@@ -26,6 +26,10 @@ public class CrawlerJobService {
     private HashMap<String,ArrayBlockingQueue<Categories>> jobQMap = new HashMap<>();
 
     public synchronized void startJob(String jobName){
+        startJob(jobName,null);
+    }
+
+    public synchronized void startJob(String jobName, Integer categoriesId){
         Wrapper<Categories> categoriesWrapper = new EntityWrapper<Categories>();
 
         switch (jobName){
@@ -34,6 +38,21 @@ public class CrawlerJobService {
                 break;
             case "categoriesListImgJob":
                 categoriesWrapper = categoriesWrapper.eq("level", "1").isNull("img");
+                break;
+            case "wallpaperListJob":
+                categoriesWrapper = categoriesWrapper.eq("id", categoriesId);
+                ////////////////////////////////////
+                /**********************************/
+                //wallpaperListJob
+                Categories categories = categoriesMapper.selectById(categoriesId);
+                categories.setStatus("Running");
+                categories.setRunning(true);
+                categories.setCurrent(0);
+                categories.setStartTime(LocalDateTime.now());
+                categories.setLastUpdate(LocalDateTime.now());
+                categoriesMapper.updateById(categories);
+                /**********************************/
+                ////////////////////////////////////
                 break;
             default:
                 return;
@@ -44,6 +63,12 @@ public class CrawlerJobService {
         crawlerJob.setStatus("Running");
         crawlerJob.setRunning(true);
         crawlerJob.setCurrent(0);
+        /**********************************/
+        //wallpaperListJob
+        if(jobName.equals("wallpaperListJob")) {
+            crawlerJob.setCurrent(categoriesId);
+        }
+        /**********************************/
         crawlerJob.setStartTime(LocalDateTime.now());
         crawlerJob.setLastUpdate(LocalDateTime.now());
         ////////////////////////////////////
@@ -51,6 +76,30 @@ public class CrawlerJobService {
         if(jobQMap.get(jobName) == null || jobQMap.get(jobName).isEmpty()){
             List<Categories> rootCategories = categoriesMapper.selectList(categoriesWrapper);
             if(rootCategories.size()>0) {
+                /**********************************/
+                //wallpaperListJob
+                if(jobName.equals("wallpaperListJob")){
+                    Categories rootCategory = rootCategories.get(0);
+                    rootCategories.clear();
+
+                    final int totalPageNumber = rootCategory.getTotal();
+
+                    //add pages
+                    try {
+                        for(int i=0;i<totalPageNumber;i++){
+                            Categories rootPageCategory = (Categories)rootCategory.clone();
+                            if(i != 0){
+                                String pageSrc = rootCategory.getSrc().substring(0,rootCategory.getSrc().indexOf(".html")) + "/page/" + (i+1);
+                                rootPageCategory.setSrc(pageSrc);
+                            }
+                            rootPageCategory.setCurrent(i+1);
+                            rootCategories.add(rootPageCategory);
+                        }
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                /**********************************/
                 ArrayBlockingQueue<Categories> categoriesQ = new ArrayBlockingQueue<Categories>(rootCategories.size());
                 categoriesQ.addAll(rootCategories);
                 jobQMap.put(jobName, categoriesQ);
@@ -81,7 +130,21 @@ public class CrawlerJobService {
             categories = jobQMap.get(jobName).poll();
 
             ////////////////////////////////////
-            crawlerJob.setCurrent(crawlerJob.getTotal() - jobQMap.get(jobName).size());
+            //crawlerJob.setCurrent(crawlerJob.getTotal() - jobQMap.get(jobName).size());
+            ////////////////////////////////////
+
+            ////////////////////////////////////
+            /**********************************/
+            //wallpaperListJob
+            if(jobName.equals("wallpaperListJob")) {
+                Categories rootCategory = categoriesMapper.selectById(crawlerJob.getCurrent());
+                rootCategory.setCurrent(rootCategory.getTotal() - jobQMap.get(jobName).size());
+                rootCategory.setLastUpdate(LocalDateTime.now());
+                categoriesMapper.updateById(rootCategory);
+            }else{
+                crawlerJob.setCurrent(crawlerJob.getTotal() - jobQMap.get(jobName).size());
+            }
+            /**********************************/
             ////////////////////////////////////
         }
 
@@ -90,6 +153,18 @@ public class CrawlerJobService {
             crawlerJob.setStatus("Complete");
             crawlerJob.setRunning(false);
             crawlerJob.setEndTime(LocalDateTime.now());
+
+            /**********************************/
+            //wallpaperListJob
+            if(jobName.equals("wallpaperListJob")) {
+                Categories rootCategory = categoriesMapper.selectById(crawlerJob.getCurrent());
+                rootCategory.setStatus("Complete");
+                rootCategory.setRunning(false);
+                rootCategory.setEndTime(LocalDateTime.now());
+                rootCategory.setLastUpdate(LocalDateTime.now());
+                categoriesMapper.updateById(rootCategory);
+            }
+            /**********************************/
         }
         crawlerJob.setLastUpdate(LocalDateTime.now());
         crawlerJobMapper.updateById(crawlerJob);
@@ -97,4 +172,5 @@ public class CrawlerJobService {
 
         return categories;
     }
+
 }

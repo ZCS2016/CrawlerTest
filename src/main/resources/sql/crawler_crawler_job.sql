@@ -43,7 +43,7 @@ CREATE TABLE `crawler_job` (
 
 LOCK TABLES `crawler_job` WRITE;
 /*!40000 ALTER TABLE `crawler_job` DISABLE KEYS */;
-INSERT INTO `crawler_job` VALUES ('categoriesJob',1,'Running',28,28,'2018-06-22 17:34:14','2018-06-22 10:16:01','2018-06-22 17:34:14'),('categoriesListImgJob',1,'Running',180,255,'2018-06-21 11:22:45','2018-06-21 10:31:42','2018-06-21 11:31:27'),('categoriesListJob',0,'Complete',28,28,'2018-06-22 10:17:30','2018-06-22 10:18:26','2018-06-22 10:18:26');
+INSERT INTO `crawler_job` VALUES ('categoriesJob',0,'Complete',28,28,'2018-06-24 23:13:24','2018-06-24 23:13:31','2018-06-24 23:13:31'),('categoriesListImgJob',0,'Complete',255,255,'2018-06-24 23:13:51','2018-06-24 23:15:00','2018-06-24 23:15:00'),('categoriesListJob',0,'Complete',28,28,'2018-06-24 23:13:34','2018-06-24 23:13:50','2018-06-24 23:13:50'),('wallpaperListJob',0,'Complete',59,105,'2018-06-24 23:22:49','2018-06-24 23:27:24','2018-06-24 23:27:24');
 /*!40000 ALTER TABLE `crawler_job` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-22 17:38:21
+-- Dump completed on 2018-06-24 23:38:31

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TableName("wallpaperswide_categories")
-public class Categories {
+public class Categories implements Cloneable{
     private Integer id;
     private String title;
     private String src;
@@ -30,6 +30,8 @@ public class Categories {
     private LocalDateTime lastUpdate;
     @TableField(exist = false)
     private List<Categories> childrenCategories = new ArrayList<>();
+    @TableField(exist = false)
+    private List<Wallpaper> childrenWallpapers = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -157,5 +159,18 @@ public class Categories {
 
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public List<Wallpaper> getChildrenWallpapers() {
+        return childrenWallpapers;
+    }
+
+    public void setChildrenWallpapers(List<Wallpaper> childrenWallpapers) {
+        this.childrenWallpapers = childrenWallpapers;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

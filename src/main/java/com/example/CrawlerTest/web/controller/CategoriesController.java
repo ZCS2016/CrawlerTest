@@ -25,6 +25,20 @@ public class CategoriesController {
         return categories;
     }
 
+    @RequestMapping("/id/{categoriesId}")
+    public Categories getById(@PathVariable Integer categoriesId){
+        Categories categories = categoriesMapper.selectById(categoriesId);
+        return categories;
+    }
+
+    @RequestMapping("/children/{categoriesId}")
+    public List<Categories> getChildren(@PathVariable Integer categoriesId){
+        List<Categories> childrenCategories = categoriesMapper.selectList(
+                new EntityWrapper<Categories>().eq("parent_id",categoriesId)
+        );
+        return childrenCategories;
+    }
+
     @RequestMapping("/level/{level}/{parentId}")
     public List<Categories> getLevel(@PathVariable Integer level,@PathVariable Integer parentId){
         EntityWrapper<Categories> categoriesEntityWrapper = new EntityWrapper<>();

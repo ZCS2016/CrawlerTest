@@ -51,8 +51,42 @@ public class CategoriesListImgCrawler {
             WebElement imgElement = imgElementList.get(0);
             String imgSrc = imgElement.getAttribute("src");
             category.setImg(imgSrc);
-            categoriesMapper.updateById(category);
+
         }
+
+        //Update parent category.total
+        List<WebElement> paginationList = driver.findElements(By.className("pagination"));
+
+        if(paginationList.size()>1) {
+            WebElement paginationElement = paginationList.get(1);
+            List<WebElement> paginationElementList = paginationElement.findElements(By.tagName("a"));
+            if (paginationElementList.size() > 1 && paginationElementList.get(paginationElementList.size() - 1).getText().equals("Next »")) {
+                WebElement totalElement = paginationElementList.get(paginationElementList.size() - 2);
+                String totalStr = totalElement.getText();
+                Integer total = Integer.parseInt(totalStr);
+                category.setTotal(total);
+            }
+        }else{
+            WebElement paginationElement = paginationList.get(0);
+            List<WebElement> paginationElementList = paginationElement.findElements(By.tagName("a"));
+            if (paginationElementList.size() > 1 && paginationElementList.get(paginationElementList.size() - 1).getText().equals("Next »")) {
+                WebElement totalElement = paginationElementList.get(paginationElementList.size() - 2);
+                String totalStr = totalElement.getText();
+                Integer total = Integer.parseInt(totalStr);
+                category.setTotal(total);
+            } else {
+                paginationElementList = paginationElement.findElements(By.tagName("span"));
+                if (paginationElementList.size() > 1 && paginationElementList.get(paginationElementList.size() - 1).getText().equals("Next »")) {
+                    WebElement totalElement = paginationElementList.get(paginationElementList.size() - 2);
+                    String totalStr = totalElement.getText();
+                    Integer total = Integer.parseInt(totalStr);
+                    category.setTotal(total);
+                }
+            }
+        }
+
+
+        categoriesMapper.updateById(category);
 
         return categoriesList;
     }
