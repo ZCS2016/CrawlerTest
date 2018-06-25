@@ -1,15 +1,18 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 @TableName("wallpaperswide_wallpaper")
 public class Wallpaper {
     private Integer id;
-    private Integer categories_id;
+    private Integer categoriesId;
     private Integer page;
     private String title;
     private String src;
     private String img;
+    @TableField("img_hd")
+    private String imgHD;
     private String hash;
 
     public Integer getId() {
@@ -20,12 +23,12 @@ public class Wallpaper {
         this.id = id;
     }
 
-    public Integer getCategories_id() {
-        return categories_id;
+    public Integer getCategoriesId() {
+        return categoriesId;
     }
 
-    public void setCategories_id(Integer categories_id) {
-        this.categories_id = categories_id;
+    public void setCategoriesId(Integer categoriesId) {
+        this.categoriesId = categoriesId;
     }
 
     public Integer getPage() {
@@ -58,6 +61,14 @@ public class Wallpaper {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getImgHD() {
+        return imgHD;
+    }
+
+    public void setImgHD(String imgHD) {
+        this.imgHD = imgHD;
     }
 
     public String getHash() {

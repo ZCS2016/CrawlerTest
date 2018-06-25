@@ -45,6 +45,7 @@ public class CrawlerJobService {
                 /**********************************/
                 //wallpaperListJob
                 Categories categories = categoriesMapper.selectById(categoriesId);
+                categories.setCount(0);
                 categories.setStatus("Running");
                 categories.setRunning(true);
                 categories.setCurrent(0);
@@ -128,24 +129,7 @@ public class CrawlerJobService {
 
         if(jobQMap.get(jobName) != null) {
             categories = jobQMap.get(jobName).poll();
-
-            ////////////////////////////////////
-            //crawlerJob.setCurrent(crawlerJob.getTotal() - jobQMap.get(jobName).size());
-            ////////////////////////////////////
-
-            ////////////////////////////////////
-            /**********************************/
-            //wallpaperListJob
-            if(jobName.equals("wallpaperListJob")) {
-                Categories rootCategory = categoriesMapper.selectById(crawlerJob.getCurrent());
-                rootCategory.setCurrent(rootCategory.getTotal() - jobQMap.get(jobName).size());
-                rootCategory.setLastUpdate(LocalDateTime.now());
-                categoriesMapper.updateById(rootCategory);
-            }else{
-                crawlerJob.setCurrent(crawlerJob.getTotal() - jobQMap.get(jobName).size());
-            }
-            /**********************************/
-            ////////////////////////////////////
+            crawlerJob.setCurrent(crawlerJob.getTotal() - jobQMap.get(jobName).size());
         }
 
         ////////////////////////////////////
@@ -153,18 +137,6 @@ public class CrawlerJobService {
             crawlerJob.setStatus("Complete");
             crawlerJob.setRunning(false);
             crawlerJob.setEndTime(LocalDateTime.now());
-
-            /**********************************/
-            //wallpaperListJob
-            if(jobName.equals("wallpaperListJob")) {
-                Categories rootCategory = categoriesMapper.selectById(crawlerJob.getCurrent());
-                rootCategory.setStatus("Complete");
-                rootCategory.setRunning(false);
-                rootCategory.setEndTime(LocalDateTime.now());
-                rootCategory.setLastUpdate(LocalDateTime.now());
-                categoriesMapper.updateById(rootCategory);
-            }
-            /**********************************/
         }
         crawlerJob.setLastUpdate(LocalDateTime.now());
         crawlerJobMapper.updateById(crawlerJob);

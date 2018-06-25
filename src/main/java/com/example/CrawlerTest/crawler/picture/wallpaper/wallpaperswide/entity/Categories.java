@@ -14,7 +14,7 @@ public class Categories implements Cloneable{
     private String title;
     private String src;
     private String img;
-    private String count;
+    private Integer count;
     private Integer level;
     private Integer parentId;
     private String hash;
@@ -65,11 +65,11 @@ public class Categories implements Cloneable{
         this.img = img;
     }
 
-    public String getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 

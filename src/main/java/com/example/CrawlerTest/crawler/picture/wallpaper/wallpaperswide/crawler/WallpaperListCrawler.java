@@ -19,16 +19,16 @@ public class WallpaperListCrawler {
     private SeleniumService seleniumService;
 
     public List<Wallpaper> getWallpaperList(Categories rootCategories){
-        List<Wallpaper> WallpaperList = new ArrayList<>();
+        List<Wallpaper> wallpaperList = new ArrayList<>();
 
         WebDriver driver = seleniumService.getDriver();
 
         List<Wallpaper> pageWallpaperList = getPageWallpaperList(driver,rootCategories);
-        WallpaperList.addAll(pageWallpaperList);
+        wallpaperList.addAll(pageWallpaperList);
 
         seleniumService.returnDriver(driver);
 
-        return WallpaperList;
+        return wallpaperList;
     }
 
     private List<Wallpaper> getPageWallpaperList(WebDriver driver, Categories rootCategories){
@@ -42,19 +42,29 @@ public class WallpaperListCrawler {
             String title = aElement.getAttribute("title");
             String src = aElement.getAttribute("href");
             String img = imgElement.getAttribute("src");
+            String imgHD = img.replaceAll("-t1","-t2");
             String hash = SHAUtil.getSHA256Str(src);
 
             Wallpaper wallpaper = new Wallpaper();
-            wallpaper.setCategories_id(rootCategories.getId());
+            wallpaper.setCategoriesId(rootCategories.getId());
             wallpaper.setPage(rootCategories.getCurrent());
             wallpaper.setTitle(title);
             wallpaper.setSrc(src);
             wallpaper.setImg(img);
+            wallpaper.setImgHD(imgHD);
             wallpaper.setHash(hash);
 
             WallpaperList.add(wallpaper);
         }
 
         return WallpaperList;
+    }
+
+    private Wallpaper getWallpaperImgHD(WebDriver driver, Wallpaper wallpaper){
+        driver.get(wallpaper.getSrc());
+        WebElement imgHDElement = driver.findElement(By.className("pxad"));
+        String imgHD = imgHDElement.getAttribute("src");
+        wallpaper.setImgHD(imgHD);
+        return wallpaper;
     }
 }

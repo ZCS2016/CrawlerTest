@@ -54,7 +54,8 @@ public class CategoriesCrawler {
 
             String title = aElement.getText();
             String src = aElement.getAttribute("href");
-            String count = smallElement.getText().substring(1,smallElement.getText().length()-1);
+            String countStr = smallElement.getText().substring(1,smallElement.getText().length()-1);
+            Integer count = Integer.parseInt(countStr);
             Integer level = 0;
             String hash = SHAUtil.getSHA256Str(src);
 

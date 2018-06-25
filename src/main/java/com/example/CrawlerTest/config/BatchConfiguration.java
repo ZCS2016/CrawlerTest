@@ -51,6 +51,8 @@ import java.util.Date;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
+    public static final int POOL_SIZE = 4;
+
     /////////////////////////////////////////////////////////////////////
     //Selenium WebDriver
     @Bean
@@ -63,7 +65,7 @@ public class BatchConfiguration {
     @Bean
     public GenericObjectPoolConfig getWebDriverPoolConfig(){
         GenericObjectPoolConfig webDriverPoolConfig = new GenericObjectPoolConfig();
-        webDriverPoolConfig.setMaxTotal(8);
+        webDriverPoolConfig.setMaxTotal(POOL_SIZE);
         return webDriverPoolConfig;
     }
 
@@ -102,7 +104,7 @@ public class BatchConfiguration {
     @Bean
     public TaskExecutor getTaskExecutor(){
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(8);
+        taskExecutor.setCorePoolSize(POOL_SIZE);
         return taskExecutor;
     };
 

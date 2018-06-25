@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `crawler` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
-USE `crawler`;
 -- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
 --
 -- Host: localhost    Database: crawler
@@ -43,7 +41,7 @@ CREATE TABLE `crawler_job` (
 
 LOCK TABLES `crawler_job` WRITE;
 /*!40000 ALTER TABLE `crawler_job` DISABLE KEYS */;
-INSERT INTO `crawler_job` VALUES ('categoriesJob',0,'Complete',28,28,'2018-06-24 23:13:24','2018-06-24 23:13:31','2018-06-24 23:13:31'),('categoriesListImgJob',0,'Complete',255,255,'2018-06-24 23:13:51','2018-06-24 23:15:00','2018-06-24 23:15:00'),('categoriesListJob',0,'Complete',28,28,'2018-06-24 23:13:34','2018-06-24 23:13:50','2018-06-24 23:13:50'),('wallpaperListJob',0,'Complete',59,105,'2018-06-24 23:22:49','2018-06-24 23:27:24','2018-06-24 23:27:24');
+INSERT INTO `crawler_job` VALUES ('categoriesJob',0,'Complete',28,28,'2018-06-25 17:54:33','2018-06-25 17:54:38','2018-06-25 17:54:38'),('categoriesListImgJob',0,'Complete',1,1,'2018-06-25 17:57:02','2018-06-25 17:57:05','2018-06-25 17:57:05'),('categoriesListJob',0,'Complete',28,28,'2018-06-25 17:54:41','2018-06-25 17:54:55','2018-06-25 17:54:55'),('wallpaperListJob',0,'Complete',110,110,'2018-06-25 18:35:44','2018-06-25 18:36:05','2018-06-25 18:36:05');
 /*!40000 ALTER TABLE `crawler_job` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-24 23:38:31
+-- Dump completed on 2018-06-25 19:08:46
