@@ -43,6 +43,8 @@ public class WallpaperListCrawler {
             String src = aElement.getAttribute("href");
             String img = imgElement.getAttribute("src");
             String imgHD = img.replaceAll("-t1","-t2");
+            String imgTitle = img.substring(img.lastIndexOf("/")+1,img.indexOf("-t1"));
+            String imgFHD = "http://wallpaperswide.com/download/" + imgTitle +"-wallpaper-1920x1080.jpg";
             String hash = SHAUtil.getSHA256Str(src);
 
             Wallpaper wallpaper = new Wallpaper();
@@ -52,6 +54,7 @@ public class WallpaperListCrawler {
             wallpaper.setSrc(src);
             wallpaper.setImg(img);
             wallpaper.setImgHD(imgHD);
+            wallpaper.setImgFHD(imgFHD);
             wallpaper.setHash(hash);
 
             WallpaperList.add(wallpaper);

@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `crawler` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+USE `crawler`;
 -- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
 --
 -- Host: localhost    Database: crawler
@@ -30,6 +32,7 @@ CREATE TABLE `wallpaperswide_wallpaper` (
   `src` varchar(256) DEFAULT NULL COMMENT '链接',
   `img` varchar(256) DEFAULT NULL COMMENT '封面',
   `img_hd` varchar(256) DEFAULT NULL COMMENT 'HD图片',
+  `img_fhd` varchar(256) DEFAULT NULL COMMENT 'FHD图片',
   `hash` varchar(64) NOT NULL COMMENT 'hash',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash_UNIQUE` (`hash`)
@@ -54,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-25 19:08:45
+-- Dump completed on 2018-06-26 18:23:13

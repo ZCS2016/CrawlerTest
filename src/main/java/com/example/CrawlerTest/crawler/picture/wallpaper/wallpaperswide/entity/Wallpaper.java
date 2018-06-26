@@ -13,6 +13,8 @@ public class Wallpaper {
     private String img;
     @TableField("img_hd")
     private String imgHD;
+    @TableField("img_fhd")
+    private String imgFHD;
     private String hash;
 
     public Integer getId() {
@@ -69,6 +71,14 @@ public class Wallpaper {
 
     public void setImgHD(String imgHD) {
         this.imgHD = imgHD;
+    }
+
+    public String getImgFHD() {
+        return imgFHD;
+    }
+
+    public void setImgFHD(String imgFHD) {
+        this.imgFHD = imgFHD;
     }
 
     public String getHash() {
