@@ -60,11 +60,4 @@ public class WallpaperListCrawler {
         return WallpaperList;
     }
 
-    private Wallpaper getWallpaperImgHD(WebDriver driver, Wallpaper wallpaper){
-        driver.get(wallpaper.getSrc());
-        WebElement imgHDElement = driver.findElement(By.className("pxad"));
-        String imgHD = imgHDElement.getAttribute("src");
-        wallpaper.setImgHD(imgHD);
-        return wallpaper;
-    }
 }
