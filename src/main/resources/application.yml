@@ -1,3 +1,6 @@
+crawler:
+  downloadDir: D:/Temp/Crawler/PIC
+
 server:
   port: 9999
 
