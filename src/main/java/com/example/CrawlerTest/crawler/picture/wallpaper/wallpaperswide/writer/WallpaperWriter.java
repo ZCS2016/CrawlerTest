@@ -5,7 +5,9 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.dao.Cate
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.dao.WallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.entity.Categories;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.entity.Wallpaper;
+import com.example.CrawlerTest.crawler.util.io.download.MultiThreadPictureDownloadService;
 import com.example.CrawlerTest.crawler.util.io.download.PictureDownloadService;
+import com.example.CrawlerTest.crawler.util.io.download.entity.PictureDownloadTask;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,9 @@ public class WallpaperWriter implements ItemWriter<Categories> {
 
     @Autowired
     WallpaperMapper wallpaperMapper;
+
+    @Autowired
+    MultiThreadPictureDownloadService multiThreadPictureDownloadService;
 
     @Value("${crawler.downloadDir}")
     private String downloadDir;
@@ -41,15 +46,11 @@ public class WallpaperWriter implements ItemWriter<Categories> {
                             downloadDirFile.mkdirs();
                         }
 
-                        Thread downloadThread = new Thread(){
-                            @Override
-                            public void run() {
-                                PictureDownloadService.downloadPicture(childrenWallpaper.getImgFHD(),childrenWallpaper.getHash()+"-FHD.jpg",downloadDir);
-                            }
-                        };
-                        downloadThread.setName(Thread.currentThread().getName()+" imgDownloadThread");
-                        downloadThread.start();
-                        downloadThread.join();
+                        PictureDownloadTask pictureDownloadTask = new PictureDownloadTask();
+                        pictureDownloadTask.setUrlStr(childrenWallpaper.getImgFHD());
+                        pictureDownloadTask.setFileName(childrenWallpaper.getHash()+"-FHD.jpg");
+                        pictureDownloadTask.setLocalDir(downloadDir);
+                        multiThreadPictureDownloadService.addPictureDownloadTask(pictureDownloadTask);
                     } else {
                         System.out.println("Wallpaperswide_Wallpaper" + childrenWallpaper.getTitle() + "exists!");
                     }

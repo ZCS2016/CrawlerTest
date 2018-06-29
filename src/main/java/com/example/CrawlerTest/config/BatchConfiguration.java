@@ -19,6 +19,7 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.C
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.reader.WallpaperListReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.writer.CategoriesWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.wallpaperswide.writer.WallpaperWriter;
+import com.example.CrawlerTest.crawler.util.io.download.MultiThreadPictureDownloadService;
 import com.example.CrawlerTest.crawler.util.selenium.SeleniumService;
 import com.example.CrawlerTest.crawler.util.selenium.WebDriverFactory;
 import com.example.CrawlerTest.web.service.CrawlerJobService;
@@ -52,6 +53,7 @@ import java.util.Date;
 @EnableBatchProcessing
 public class BatchConfiguration {
     public static final int POOL_SIZE = 4;
+    public static final int PICTURE_DOWNLOAD_THREAD_POOL_SIZE = 4;
 
     /////////////////////////////////////////////////////////////////////
     //Selenium WebDriver
@@ -85,6 +87,11 @@ public class BatchConfiguration {
     public CrawlerJobService getCrawlerJobService(){
         CrawlerJobService crawlerJobService = new CrawlerJobService();
         return crawlerJobService;
+    }
+
+    @Bean
+    public MultiThreadPictureDownloadService getMultiThreadPictureDownloadService(){
+        return new MultiThreadPictureDownloadService(PICTURE_DOWNLOAD_THREAD_POOL_SIZE);
     }
 
     /////////////////////////////////////////////////////////////////////

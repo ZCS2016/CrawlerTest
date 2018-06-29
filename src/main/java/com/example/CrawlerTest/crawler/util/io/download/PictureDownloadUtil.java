@@ -1,5 +1,6 @@
 package com.example.CrawlerTest.crawler.util.io.download;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -64,5 +65,29 @@ public class PictureDownloadUtil {
         } finally {
             httpclient.getConnectionManager().shutdown();
         }
+    }
+
+    public static boolean isImgUrlAvailable(String imgUrl){
+        boolean available = true;
+
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpget = new HttpGet(imgUrl);
+            HttpResponse response = httpclient.execute(httpget);
+            Header[] headers = response.getHeaders("Content-Type");
+            if(headers != null && headers.length == 1 ){
+                if(headers[0].getValue().contains("image")){
+                    available = true;
+                }else{
+                    available = false;
+                }
+            }else{
+                System.out.println("Error: Unknown HttpHeaders " + headers);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return available;
     }
 }
