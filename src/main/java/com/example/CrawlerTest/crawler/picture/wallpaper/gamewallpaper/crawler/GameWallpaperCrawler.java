@@ -1,6 +1,7 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.crawler;
 
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
 import com.example.CrawlerTest.crawler.util.codec.SHAUtil;
 import com.example.CrawlerTest.crawler.util.selenium.SeleniumService;
@@ -19,41 +20,38 @@ public class GameWallpaperCrawler {
     @Autowired
     private SeleniumService seleniumService;
 
-    public List<GameWallpaper> getGameWallpaperList(){
+    public List<GameWallpaper> getGameWallpaperList(GameWallpaperCategories gameWallpaperCategories){
         List<GameWallpaper> gameWallpaperList = new ArrayList<>();
-
-        final int pageNumber = 10;
-        String[] urls = new String[pageNumber];
-        urls[0] = "http://wallpaperswide.com/games-desktop-wallpapers.html";
-        for(int i=1;i<pageNumber;i++){
-            urls[i] = "http://wallpaperswide.com/games-desktop-wallpapers/page/"+(i+1);
-        }
 
         WebDriver driver = seleniumService.getDriver();
 
-        for(int i=0;i<pageNumber;i++) {
-            List<GameWallpaper> pageGameWallpaperList = getPageGameWallpaperList(driver, urls[i]);
-            gameWallpaperList.addAll(pageGameWallpaperList);
-        }
+        List<GameWallpaper> pageGameWallpaperList = getPageGameWallpaperList(driver, gameWallpaperCategories);
+        gameWallpaperList.addAll(pageGameWallpaperList);
 
-        driver.close();
+        seleniumService.returnDriver(driver);
 
         return gameWallpaperList;
     }
 
-    private List<GameWallpaper> getPageGameWallpaperList(WebDriver driver,String url){
+    private List<GameWallpaper> getPageGameWallpaperList(WebDriver driver,GameWallpaperCategories gameWallpaperCategories){
         List<GameWallpaper> gameWallpaperList = new ArrayList<>();
 
-        driver.get(url);
-        List<WebElement> imgElementList = driver.findElements(By.className("thumb_img"));
+        driver.get(gameWallpaperCategories.getSrc());
+        List<WebElement> imgElementList = driver.findElements(By.xpath("//img[@class='zoom123']"));
         for(WebElement imgElement:imgElementList){
-            String src = imgElement.getAttribute("src");
-            String title = src.substring(src.lastIndexOf("/")+1,src.lastIndexOf(".jpg"));
+            WebElement aElement = imgElement.findElement(By.xpath(".."));
+
+            String title = imgElement.getAttribute("alt");
+            String img = imgElement.getAttribute("src");
+            String src = aElement.getAttribute("href");
             String hash = SHAUtil.getSHA256Str(src);
 
             GameWallpaper gameWallpaper = new GameWallpaper();
+            gameWallpaper.setCategoriesId(gameWallpaperCategories.getId());
+            gameWallpaper.setPage(1);
             gameWallpaper.setTitle(title);
             gameWallpaper.setSrc(src);
+            gameWallpaper.setImg(img);
             gameWallpaper.setHash(hash);
 
             gameWallpaperList.add(gameWallpaper);

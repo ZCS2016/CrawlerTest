@@ -3,19 +3,20 @@ package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
-@TableName("gamewallpaper_wallpaper")
-public class GameWallpaper {
+import java.util.ArrayList;
+import java.util.List;
+
+@TableName("gamewallpaper_categories")
+public class GameWallpaperCategories {
     private Integer id;
-    private Integer categoriesId;
-    private Integer page;
     private String title;
     private String src;
     private String img;
-    @TableField("img_hd")
-    private String imgHD;
-    @TableField("img_fhd")
-    private String imgFHD;
+    private Integer count;
     private String hash;
+
+    @TableField(exist = false)
+    private List<GameWallpaper> childrenWallpapers = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -23,22 +24,6 @@ public class GameWallpaper {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getCategoriesId() {
-        return categoriesId;
-    }
-
-    public void setCategoriesId(Integer categoriesId) {
-        this.categoriesId = categoriesId;
-    }
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
     }
 
     public String getTitle() {
@@ -65,20 +50,12 @@ public class GameWallpaper {
         this.img = img;
     }
 
-    public String getImgHD() {
-        return imgHD;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setImgHD(String imgHD) {
-        this.imgHD = imgHD;
-    }
-
-    public String getImgFHD() {
-        return imgFHD;
-    }
-
-    public void setImgFHD(String imgFHD) {
-        this.imgFHD = imgFHD;
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public String getHash() {
@@ -87,5 +64,13 @@ public class GameWallpaper {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public List<GameWallpaper> getChildrenWallpapers() {
+        return childrenWallpapers;
+    }
+
+    public void setChildrenWallpapers(List<GameWallpaper> childrenWallpapers) {
+        this.childrenWallpapers = childrenWallpapers;
     }
 }

@@ -1,9 +1,6 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.crawler.GameWallpaperCrawler;
-import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperCategoriesMapper;
-import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.crawler.GameWallpaperCategoriesCrawler;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
@@ -14,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameWallpaperReader implements ItemReader<GameWallpaperCategories> {
+public class GameWallpaperCategoriesReader implements ItemReader<GameWallpaperCategories> {
     @Autowired
-    GameWallpaperCategoriesMapper gameWallpaperCategoriesMapper;
+    private GameWallpaperCategoriesCrawler gameWallpaperCategoriesCrawler;
 
     private int count = 0;
     private List<GameWallpaperCategories> gameWallpaperCategoriesList = new ArrayList<>();
@@ -24,9 +21,7 @@ public class GameWallpaperReader implements ItemReader<GameWallpaperCategories> 
     @Override
     public GameWallpaperCategories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if(gameWallpaperCategoriesList.isEmpty()){
-            gameWallpaperCategoriesMapper.selectList(
-                    new EntityWrapper<GameWallpaperCategories>().eq("id",1)
-            );
+            gameWallpaperCategoriesList.addAll(gameWallpaperCategoriesCrawler.getGameWallpaperCategoriesList("https://www.gamewallpapers.com/index.php?page=directory"));
         }
 
         if(!gameWallpaperCategoriesList.isEmpty()&&count<gameWallpaperCategoriesList.size()){

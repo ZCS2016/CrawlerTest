@@ -1,22 +1,34 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
-import com.example.CrawlerTest.crawler.util.io.download.PictureDownloadService;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class GameWallpaperWriter implements ItemWriter<GameWallpaper> {
+public class GameWallpaperWriter implements ItemWriter<GameWallpaperCategories> {
+    @Autowired
+    GameWallpaperMapper gameWallpaperMapper;
 
     @Override
-    public void write(List<? extends GameWallpaper> list) throws Exception {
-//        for(Wallpaper gameWallpaper:list){
-//            String src = gameWallpaper.getSrc();
-//            String title = gameWallpaper.getTitle();
-//            String fileType = src.substring(src.lastIndexOf("."));
-//            title += fileType;
-//            PictureDownloadService.downloadPicture(src,title,"img/game");
-//        }
+    public void write(List<? extends GameWallpaperCategories> list) throws Exception {
+        for(GameWallpaperCategories gameWallpaperCategories:list){
+            for(GameWallpaper gameWallpaper:gameWallpaperCategories.getChildrenWallpapers()){
+                try {
+                    Integer count = gameWallpaperMapper.selectCount(new EntityWrapper<GameWallpaper>().eq("hash",gameWallpaper.getHash()));
+                    if(count==0) {
+                        gameWallpaperMapper.insert(gameWallpaper);
+                    }else{
+                        System.out.println("GameWallpaper exists! " + gameWallpaper.getTitle());
+                    }
+                }catch (Exception ex){
+                    System.out.println(ex.getMessage());
+                }
+            }
+        }
     }
 
 }

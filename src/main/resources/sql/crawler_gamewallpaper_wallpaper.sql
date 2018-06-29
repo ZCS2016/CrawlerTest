@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `crawler` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+USE `crawler`;
 -- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
 --
 -- Host: localhost    Database: crawler
@@ -16,16 +18,21 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `game_wallpaper`
+-- Table structure for table `gamewallpaper_wallpaper`
 --
 
-DROP TABLE IF EXISTS `game_wallpaper`;
+DROP TABLE IF EXISTS `gamewallpaper_wallpaper`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `game_wallpaper` (
+CREATE TABLE `gamewallpaper_wallpaper` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `title` varchar(128) DEFAULT NULL COMMENT '标题',
+  `categories_id` int(11) DEFAULT NULL,
+  `page` int(11) DEFAULT NULL COMMENT '页码',
+  `title` varchar(256) DEFAULT NULL COMMENT '标题',
   `src` varchar(256) DEFAULT NULL COMMENT '链接',
+  `img` varchar(256) DEFAULT NULL COMMENT '封面',
+  `img_hd` varchar(256) DEFAULT NULL COMMENT 'HD图片',
+  `img_fhd` varchar(256) DEFAULT NULL COMMENT 'FHD图片',
   `hash` varchar(64) NOT NULL COMMENT 'hash',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash_UNIQUE` (`hash`)
@@ -33,12 +40,12 @@ CREATE TABLE `game_wallpaper` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `game_wallpaper`
+-- Dumping data for table `gamewallpaper_wallpaper`
 --
 
-LOCK TABLES `game_wallpaper` WRITE;
-/*!40000 ALTER TABLE `game_wallpaper` DISABLE KEYS */;
-/*!40000 ALTER TABLE `game_wallpaper` ENABLE KEYS */;
+LOCK TABLES `gamewallpaper_wallpaper` WRITE;
+/*!40000 ALTER TABLE `gamewallpaper_wallpaper` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gamewallpaper_wallpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-25 19:08:48
+-- Dump completed on 2018-06-29 18:14:12
