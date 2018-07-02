@@ -1,5 +1,6 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.crawler;
 
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperCategoriesMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
@@ -17,7 +18,6 @@ import java.util.List;
 
 @Component
 public class GameWallpaperCrawler {
-
     @Autowired
     private SeleniumService seleniumService;
 

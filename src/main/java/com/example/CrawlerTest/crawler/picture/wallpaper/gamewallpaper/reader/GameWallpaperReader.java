@@ -25,7 +25,7 @@ public class GameWallpaperReader implements ItemReader<GameWallpaperCategories> 
     public GameWallpaperCategories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if(gameWallpaperCategoriesList.isEmpty()){
             gameWallpaperCategoriesList.addAll(gameWallpaperCategoriesMapper.selectList(
-                    new EntityWrapper<GameWallpaperCategories>().between("id",1,10)
+                    new EntityWrapper<GameWallpaperCategories>()
             ));
         }
 

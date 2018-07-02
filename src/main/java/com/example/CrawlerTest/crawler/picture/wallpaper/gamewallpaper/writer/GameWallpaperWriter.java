@@ -1,6 +1,7 @@
 package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperCategoriesMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
@@ -14,6 +15,9 @@ import java.io.File;
 import java.util.List;
 
 public class GameWallpaperWriter implements ItemWriter<GameWallpaperCategories> {
+    @Autowired
+    GameWallpaperCategoriesMapper gameWallpaperCategoriesMapper;
+
     @Autowired
     GameWallpaperMapper gameWallpaperMapper;
 
@@ -33,6 +37,13 @@ public class GameWallpaperWriter implements ItemWriter<GameWallpaperCategories> 
                     System.out.println(ex.getMessage());
                 }
             }
+
+            //Update GameWallpaperCategories
+            gameWallpaperCategories.setCount(gameWallpaperCategories.getChildrenWallpapers().size());
+            if(gameWallpaperCategories.getChildrenWallpapers().size()>0) {
+                gameWallpaperCategories.setImg(gameWallpaperCategories.getChildrenWallpapers().get(0).getImg());
+            }
+            gameWallpaperCategoriesMapper.updateById(gameWallpaperCategories);
         }
     }
 
