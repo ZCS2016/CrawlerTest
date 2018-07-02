@@ -4,9 +4,13 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
+import com.example.CrawlerTest.crawler.util.io.download.MultiThreadPictureDownloadService;
+import com.example.CrawlerTest.crawler.util.io.download.entity.PictureDownloadTask;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.io.File;
 import java.util.List;
 
 public class GameWallpaperWriter implements ItemWriter<GameWallpaperCategories> {
@@ -15,6 +19,7 @@ public class GameWallpaperWriter implements ItemWriter<GameWallpaperCategories> 
 
     @Override
     public void write(List<? extends GameWallpaperCategories> list) throws Exception {
+
         for(GameWallpaperCategories gameWallpaperCategories:list){
             for(GameWallpaper gameWallpaper:gameWallpaperCategories.getChildrenWallpapers()){
                 try {

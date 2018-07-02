@@ -3,10 +3,13 @@ package com.example.CrawlerTest.config;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor.GameWallpaperCategoriesProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor.GameWallpaperDownloadProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor.GameWallpaperProcessor;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperCategoriesReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperDownloadReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperCategoriesWriter;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperDownloadWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.entity.LinuxWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.linuxwallpaper.processor.LinuxWallpaperProcessor;
@@ -235,6 +238,40 @@ public class BatchConfiguration {
         return jobBuilderFactory.get("gameWallpaperJob")
                 .incrementer(new RunIdIncrementer())
                 .flow(gameWallpaperJobStep)
+                .end()
+                .build();
+    }
+
+    @Bean
+    public GameWallpaperDownloadReader getGameWallpaperDownloadReader(){
+        return new GameWallpaperDownloadReader();
+    }
+
+    @Bean
+    public GameWallpaperDownloadProcessor getGameWallpaperDownloadProcessor(){
+        return new GameWallpaperDownloadProcessor();
+    }
+
+    @Bean
+    public GameWallpaperDownloadWriter getGameWallpaperDownloadWriter(){
+        return new GameWallpaperDownloadWriter();
+    }
+
+    @Bean
+    public Step gameWallpaperDownloadJobStep(){
+        return stepBuilderFactory.get("gameWallpaperDownloadJobStep")
+                .<GameWallpaper,GameWallpaper>chunk(1)
+                .reader(getGameWallpaperDownloadReader())
+                .processor(getGameWallpaperDownloadProcessor())
+                .writer(getGameWallpaperDownloadWriter())
+                .build();
+    }
+
+    @Bean
+    public Job gameWallpaperDownloadJob(Step gameWallpaperDownloadJobStep){
+        return jobBuilderFactory.get("gameWallpaperDownloadJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(gameWallpaperDownloadJobStep)
                 .end()
                 .build();
     }

@@ -19,31 +19,31 @@ public class WebDriverFactory extends BasePooledObjectFactory<WebDriver> {
     private static ChromeDriverService service;
 
     public static void createAndStartService() {
-//        if(service == null) {
-//            service = new ChromeDriverService.Builder()
-//                    .usingDriverExecutable(new File("D:/Java/Crawler/Selenium/chromedriver.exe"))
-//                    .usingAnyFreePort()
-//                    .build();
-//            try {
-//                service.start();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if(service == null) {
+            service = new ChromeDriverService.Builder()
+                    .usingDriverExecutable(new File("D:/Java/Crawler/Selenium/chromedriver.exe"))
+                    .usingAnyFreePort()
+                    .build();
+            try {
+                service.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public WebDriver create() throws Exception {
-//        ChromeOptions options = new ChromeOptions();
-//        Map<String, Object> preferences = new HashMap<String, Object>();
-//        preferences.put("profile.default_content_setting_values.images",2);
-//        preferences.put("profile.default_content_setting_values.javascript",2);
-//        options.setExperimentalOption("prefs",preferences);
-//        WebDriver driver = new RemoteWebDriver(service.getUrl(), options);
+        ChromeOptions options = new ChromeOptions();
+        Map<String, Object> preferences = new HashMap<String, Object>();
+        preferences.put("profile.default_content_setting_values.images",2);
+        preferences.put("profile.default_content_setting_values.javascript",2);
+        options.setExperimentalOption("prefs",preferences);
+        WebDriver driver = new RemoteWebDriver(service.getUrl(), options);
 
-        HtmlUnitDriver driver = new HtmlUnitDriver();
-        driver.setDownloadImages(false);
-        driver.setJavascriptEnabled(false);
+//        HtmlUnitDriver driver = new HtmlUnitDriver();
+//        driver.setDownloadImages(false);
+//        driver.setJavascriptEnabled(false);
         return driver;
     }
 

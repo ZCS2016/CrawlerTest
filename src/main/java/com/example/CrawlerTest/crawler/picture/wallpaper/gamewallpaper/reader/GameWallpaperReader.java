@@ -24,12 +24,13 @@ public class GameWallpaperReader implements ItemReader<GameWallpaperCategories> 
     @Override
     public GameWallpaperCategories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if(gameWallpaperCategoriesList.isEmpty()){
-            gameWallpaperCategoriesMapper.selectList(
-                    new EntityWrapper<GameWallpaperCategories>().eq("id",1)
-            );
+            gameWallpaperCategoriesList.addAll(gameWallpaperCategoriesMapper.selectList(
+                    new EntityWrapper<GameWallpaperCategories>().between("id",1,10)
+            ));
         }
 
         if(!gameWallpaperCategoriesList.isEmpty()&&count<gameWallpaperCategoriesList.size()){
+            System.out.println("Process " + (count+1) + " : " + gameWallpaperCategoriesList.get(count).getTitle());
             return gameWallpaperCategoriesList.get(count++);
         }else{
             count = 0;

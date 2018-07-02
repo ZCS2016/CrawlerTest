@@ -61,6 +61,10 @@ public class CrawlerController {
     @Qualifier("gameWallpaperJob")
     private Job gameWallpaperJob;
 
+    @Autowired
+    @Qualifier("gameWallpaperDownloadJob")
+    private Job gameWallpaperDownloadJob;
+
     @RequestMapping("/jobs")
     public List<CrawlerJob> getJobs(){
         List<CrawlerJob> jobs = crawlerJobMapper.selectList(new EntityWrapper<CrawlerJob>());
@@ -182,6 +186,24 @@ public class CrawlerController {
         }
 
         return "GameWallpaperJob Done!";
+    }
+
+    @RequestMapping("/run/gameWallpaperDownloadJob")
+    public String runGameWallpaperDownloadJob(){
+
+        try {
+            jobLauncher.run(gameWallpaperDownloadJob,jobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
+
+        return "GameWallpaperDownloadJob Done!";
     }
 
     public JobParameters jobParameters(){
