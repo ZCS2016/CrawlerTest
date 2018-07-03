@@ -1,4 +1,4 @@
-package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity;
+package com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import java.util.ArrayList;
 import java.util.List;
 
-@TableName("gamewallpaper_categories")
-public class GameWallpaperCategories {
+@TableName("cgwallpaper_categories")
+public class CGWallpaperCategories {
     private Integer id;
     private String title;
     private String src;
@@ -17,7 +17,7 @@ public class GameWallpaperCategories {
     private String hash;
 
     @TableField(exist = false)
-    private List<GameWallpaper> childrenWallpapers = new ArrayList<>();
+    private List<CGWallpaper> childrenWallpapers = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -75,11 +75,11 @@ public class GameWallpaperCategories {
         this.hash = hash;
     }
 
-    public List<GameWallpaper> getChildrenWallpapers() {
+    public List<CGWallpaper> getChildrenWallpapers() {
         return childrenWallpapers;
     }
 
-    public void setChildrenWallpapers(List<GameWallpaper> childrenWallpapers) {
+    public void setChildrenWallpapers(List<CGWallpaper> childrenWallpapers) {
         this.childrenWallpapers = childrenWallpapers;
     }
 }

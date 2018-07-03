@@ -31,12 +31,6 @@ public class WallpaperWriter implements ItemWriter<Categories> {
 
     @Override
     public void write(List<? extends Categories> categoriesList) throws Exception {
-        //Download HD img
-        File downloadDirFile = new File(downloadDir);
-        if(!downloadDirFile.exists()){
-            downloadDirFile.mkdirs();
-        }
-
         for (Categories categories : categoriesList) {
             Integer count = 0;
             for (Wallpaper childrenWallpaper : categories.getChildrenWallpapers()) {
@@ -46,6 +40,7 @@ public class WallpaperWriter implements ItemWriter<Categories> {
                         wallpaperMapper.insert(childrenWallpaper);
                         count++;
 
+                        //Download HD img
                         PictureDownloadTask pictureDownloadTask = new PictureDownloadTask();
                         pictureDownloadTask.setUrlStr(childrenWallpaper.getImgFHD());
                         pictureDownloadTask.setFileName(childrenWallpaper.getHash()+"-FHD.jpg");

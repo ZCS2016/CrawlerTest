@@ -44,6 +44,7 @@ public class WebDriverFactory extends BasePooledObjectFactory<WebDriver> {
 //        HtmlUnitDriver driver = new HtmlUnitDriver();
 //        driver.setDownloadImages(false);
 //        driver.setJavascriptEnabled(false);
+//        driver.setProxy("127.0.0.1",1080);
         return driver;
     }
 

@@ -36,7 +36,7 @@ CREATE TABLE `page_list` (
 
 LOCK TABLES `page_list` WRITE;
 /*!40000 ALTER TABLE `page_list` DISABLE KEYS */;
-INSERT INTO `page_list` VALUES (1,'GameWallpaper','http://hd.wallpaperswide.com/thumbs/shadow_of_the_tomb_raider_2018_puzzle_video_game-t1.jpg'),(2,'LinuxWallpaper','https://www.linuxidc.com/upload/2018_05/18050119472444t.jpg');
+INSERT INTO `page_list` VALUES (1,'CGWallpaper','http://hd.wallpaperswide.com/thumbs/shadow_of_the_tomb_raider_2018_puzzle_video_game-t1.jpg'),(2,'LinuxWallpaper','https://www.linuxidc.com/upload/2018_05/18050119472444t.jpg');
 /*!40000 ALTER TABLE `page_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

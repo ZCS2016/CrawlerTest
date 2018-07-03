@@ -1,23 +1,21 @@
-package com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity;
+package com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@TableName("gamewallpaper_categories")
-public class GameWallpaperCategories {
+@TableName("cgwallpaper_wallpaper")
+public class CGWallpaper {
     private Integer id;
+    private Integer categoriesId;
+    private Integer page;
     private String title;
     private String src;
     private String img;
-    private String imgHash;
-    private Integer count;
+    @TableField("img_hd")
+    private String imgHD;
+    @TableField("img_fhd")
+    private String imgFHD;
     private String hash;
-
-    @TableField(exist = false)
-    private List<GameWallpaper> childrenWallpapers = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -25,6 +23,22 @@ public class GameWallpaperCategories {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCategoriesId() {
+        return categoriesId;
+    }
+
+    public void setCategoriesId(Integer categoriesId) {
+        this.categoriesId = categoriesId;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
     public String getTitle() {
@@ -51,20 +65,20 @@ public class GameWallpaperCategories {
         this.img = img;
     }
 
-    public String getImgHash() {
-        return imgHash;
+    public String getImgHD() {
+        return imgHD;
     }
 
-    public void setImgHash(String imgHash) {
-        this.imgHash = imgHash;
+    public void setImgHD(String imgHD) {
+        this.imgHD = imgHD;
     }
 
-    public Integer getCount() {
-        return count;
+    public String getImgFHD() {
+        return imgFHD;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setImgFHD(String imgFHD) {
+        this.imgFHD = imgFHD;
     }
 
     public String getHash() {
@@ -73,13 +87,5 @@ public class GameWallpaperCategories {
 
     public void setHash(String hash) {
         this.hash = hash;
-    }
-
-    public List<GameWallpaper> getChildrenWallpapers() {
-        return childrenWallpapers;
-    }
-
-    public void setChildrenWallpapers(List<GameWallpaper> childrenWallpapers) {
-        this.childrenWallpapers = childrenWallpapers;
     }
 }

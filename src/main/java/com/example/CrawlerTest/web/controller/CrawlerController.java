@@ -1,6 +1,8 @@
 package com.example.CrawlerTest.web.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.service.CGWallpaperJobService;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.service.GameWallpaperJobService;
 import com.example.CrawlerTest.web.dao.CrawlerJobMapper;
 import com.example.CrawlerTest.web.entity.CrawlerJob;
 import com.example.CrawlerTest.web.service.CrawlerJobService;
@@ -54,6 +56,9 @@ public class CrawlerController {
     private Job wallpaperListJob;
 
     @Autowired
+    GameWallpaperJobService gameWallpaperJobService;
+
+    @Autowired
     @Qualifier("gameWallpaperCategoriesJob")
     private Job gameWallpaperCategoriesJob;
 
@@ -64,6 +69,21 @@ public class CrawlerController {
     @Autowired
     @Qualifier("gameWallpaperDownloadJob")
     private Job gameWallpaperDownloadJob;
+
+    @Autowired
+    private CGWallpaperJobService cgWallpaperJobService;
+
+    @Autowired
+    @Qualifier("CGWallpaperCategoriesJob")
+    private Job CGWallpaperCategoriesJob;
+
+    @Autowired
+    @Qualifier("CGWallpaperJob")
+    private Job CGWallpaperJob;
+
+    @Autowired
+    @Qualifier("CGWallpaperDownloadJob")
+    private Job CGWallpaperDownloadJob;
 
     @RequestMapping("/jobs")
     public List<CrawlerJob> getJobs(){
@@ -174,6 +194,7 @@ public class CrawlerController {
     public String runGameWallpaperJob(){
 
         try {
+            gameWallpaperJobService.startJob();
             jobLauncher.run(gameWallpaperJob,jobParameters());
         } catch (JobExecutionAlreadyRunningException e) {
             e.printStackTrace();
@@ -204,6 +225,61 @@ public class CrawlerController {
         }
 
         return "GameWallpaperDownloadJob Done!";
+    }
+
+    @RequestMapping("/run/CGWallpaperCategoriesJob")
+    public String runCGWallpaperCategoriesJob(){
+
+        try {
+            jobLauncher.run(CGWallpaperCategoriesJob,jobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
+
+        return "CGWallpaperCategoriesJob Done!";
+    }
+
+    @RequestMapping("/run/CGWallpaperJob")
+    public String runCGWallpaperJob(){
+
+        try {
+            cgWallpaperJobService.startJob();
+            jobLauncher.run(CGWallpaperJob,jobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
+
+        return "CGWallpaperJob Done!";
+    }
+
+    @RequestMapping("/run/CGWallpaperDownloadJob")
+    public String runCGWallpaperDownloadJob(){
+
+        try {
+            jobLauncher.run(CGWallpaperDownloadJob,jobParameters());
+        } catch (JobExecutionAlreadyRunningException e) {
+            e.printStackTrace();
+        } catch (JobRestartException e) {
+            e.printStackTrace();
+        } catch (JobInstanceAlreadyCompleteException e) {
+            e.printStackTrace();
+        } catch (JobParametersInvalidException e) {
+            e.printStackTrace();
+        }
+
+        return "CGWallpaperDownloadJob Done!";
     }
 
     public JobParameters jobParameters(){

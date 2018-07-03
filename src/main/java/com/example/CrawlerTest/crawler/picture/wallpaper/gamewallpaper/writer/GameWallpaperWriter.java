@@ -5,6 +5,7 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameW
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
+import com.example.CrawlerTest.crawler.util.codec.SHAUtil;
 import com.example.CrawlerTest.crawler.util.io.download.MultiThreadPictureDownloadService;
 import com.example.CrawlerTest.crawler.util.io.download.entity.PictureDownloadTask;
 import org.springframework.batch.item.ItemWriter;
@@ -31,17 +32,18 @@ public class GameWallpaperWriter implements ItemWriter<GameWallpaperCategories> 
                     if(count==0) {
                         gameWallpaperMapper.insert(gameWallpaper);
                     }else{
-                        System.out.println("GameWallpaper exists! " + gameWallpaper.getTitle());
+                        System.out.println("CGWallpaper exists! " + gameWallpaper.getTitle());
                     }
                 }catch (Exception ex){
                     System.out.println(ex.getMessage());
                 }
             }
 
-            //Update GameWallpaperCategories
+            //Update CGWallpaperCategories
             gameWallpaperCategories.setCount(gameWallpaperCategories.getChildrenWallpapers().size());
             if(gameWallpaperCategories.getChildrenWallpapers().size()>0) {
                 gameWallpaperCategories.setImg(gameWallpaperCategories.getChildrenWallpapers().get(0).getImg());
+                gameWallpaperCategories.setImgHash(gameWallpaperCategories.getChildrenWallpapers().get(0).getHash());
             }
             gameWallpaperCategoriesMapper.updateById(gameWallpaperCategories);
         }

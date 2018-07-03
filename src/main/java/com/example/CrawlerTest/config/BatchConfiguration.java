@@ -1,5 +1,18 @@
 package com.example.CrawlerTest.config;
 
+import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.entity.CGWallpaper;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.entity.CGWallpaperCategories;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.processor.CGWallpaperCategoriesProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.processor.CGWallpaperDownloadProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.processor.CGWallpaperProcessor;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.reader.CGWallpaperCategoriesReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.reader.CGWallpaperDownloadReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.reader.CGWallpaperReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.service.CGWallpaperJobService;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.writer.CGWallpaperCategoriesWriter;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.writer.CGWallpaperDownloadWriter;
+import com.example.CrawlerTest.crawler.picture.wallpaper.cgwallpaper.writer.CGWallpaperWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor.GameWallpaperCategoriesProcessor;
@@ -8,6 +21,7 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.processor
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperCategoriesReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperDownloadReader;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.reader.GameWallpaperReader;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.service.GameWallpaperJobService;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperCategoriesWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperDownloadWriter;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.writer.GameWallpaperWriter;
@@ -60,7 +74,17 @@ import java.util.Date;
 @EnableBatchProcessing
 public class BatchConfiguration {
     public static final int POOL_SIZE = 4;
-    public static final int PICTURE_DOWNLOAD_THREAD_POOL_SIZE = 4;
+    public static final int PICTURE_DOWNLOAD_THREAD_POOL_SIZE = 8;
+
+    /////////////////////////////////////////////////////////////////////
+    //MyBatis-Plus
+//    @Bean
+//    public PerformanceInterceptor getPerformanceInterceptor(){
+//        return new PerformanceInterceptor();
+//    }
+
+    /////////////////////////////////////////////////////////////////////
+
 
     /////////////////////////////////////////////////////////////////////
     //Selenium WebDriver
@@ -173,7 +197,7 @@ public class BatchConfiguration {
 
 
     /////////////////////////////////////////////////////////////////////
-    //GameWallpaper
+    //CGWallpaper
     @Bean
     public GameWallpaperCategoriesReader getGameWallpaperCategoriesReader(){
         return new GameWallpaperCategoriesReader();
@@ -209,6 +233,11 @@ public class BatchConfiguration {
     }
 
     @Bean
+    public GameWallpaperJobService getGameWallpaperJobService(){
+        return new GameWallpaperJobService();
+    }
+
+    @Bean
     public GameWallpaperReader getGameWallpaperReader(){
         return new GameWallpaperReader();
     }
@@ -224,12 +253,13 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step gameWallpaperJobStep(){
+    public Step gameWallpaperJobStep(TaskExecutor taskExecutor){
         return stepBuilderFactory.get("gameWallpaperJobStep")
                 .<GameWallpaperCategories,GameWallpaperCategories>chunk(1)
                 .reader(getGameWallpaperReader())
                 .processor(getGameWallpaperProcessor())
                 .writer(getGameWallpaperWriter())
+                .taskExecutor(taskExecutor)
                 .build();
     }
 
@@ -277,6 +307,124 @@ public class BatchConfiguration {
     }
 
     /////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////
+    //CGWallpaper
+    @Bean
+    public CGWallpaperCategoriesReader getCGWallpaperCategoriesReader(){
+        return new CGWallpaperCategoriesReader();
+    }
+
+    @Bean
+    public CGWallpaperCategoriesProcessor getCGWallpaperCategoriesProcessor(){
+        return new CGWallpaperCategoriesProcessor();
+    }
+
+    @Bean
+    public CGWallpaperCategoriesWriter getCGWallpaperCategoriesWriter(){
+        return new CGWallpaperCategoriesWriter();
+    }
+
+    @Bean
+    public Step CGWallpaperCategoriesJobStep(){
+        return stepBuilderFactory.get("CGWallpaperCategoriesJobStep")
+                .<CGWallpaperCategories,CGWallpaperCategories>chunk(1)
+                .reader(getCGWallpaperCategoriesReader())
+                .processor(getCGWallpaperCategoriesProcessor())
+                .writer(getCGWallpaperCategoriesWriter())
+                .build();
+    }
+
+    @Bean
+    public Job CGWallpaperCategoriesJob(Step CGWallpaperCategoriesJobStep){
+        return jobBuilderFactory.get("CGWallpaperCategoriesJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(CGWallpaperCategoriesJobStep)
+                .end()
+                .build();
+    }
+
+
+    @Bean
+    public CGWallpaperJobService getCGWallpaperJobService(){
+        return new CGWallpaperJobService();
+    }
+
+    @Bean
+    public CGWallpaperReader getCGWallpaperReader(){
+        return new CGWallpaperReader();
+    }
+
+    @Bean
+    public CGWallpaperProcessor getCGWallpaperProcessor(){
+        return new CGWallpaperProcessor();
+    }
+
+    @Bean
+    public CGWallpaperWriter getCGWallpaperWriter(){
+        return new CGWallpaperWriter();
+    }
+
+    @Bean
+    public Step CGWallpaperJobStep(TaskExecutor taskExecutor){
+        return stepBuilderFactory.get("CGWallpaperJobStep")
+                .<CGWallpaperCategories,CGWallpaperCategories>chunk(1)
+                .reader(getCGWallpaperReader())
+                .processor(getCGWallpaperProcessor())
+                .writer(getCGWallpaperWriter())
+                .taskExecutor(taskExecutor)
+                .build();
+    }
+
+    @Bean
+    public Job CGWallpaperJob(Step CGWallpaperJobStep){
+        return jobBuilderFactory.get("CGWallpaperJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(CGWallpaperJobStep)
+                .end()
+                .build();
+    }
+
+
+    @Bean
+    public CGWallpaperDownloadReader getCGWallpaperDownloadReader(){
+        return new CGWallpaperDownloadReader();
+    }
+
+    @Bean
+    public CGWallpaperDownloadProcessor getCGWallpaperDownloadProcessor(){
+        return new CGWallpaperDownloadProcessor();
+    }
+
+    @Bean
+    public CGWallpaperDownloadWriter getCGWallpaperDownloadWriter(){
+        return new CGWallpaperDownloadWriter();
+    }
+
+    @Bean
+    public Step CGWallpaperDownloadJobStep(){
+        return stepBuilderFactory.get("CGWallpaperDownloadJobStep")
+                .<CGWallpaper,CGWallpaper>chunk(1)
+                .reader(getCGWallpaperDownloadReader())
+                .processor(getCGWallpaperDownloadProcessor())
+                .writer(getCGWallpaperDownloadWriter())
+                .build();
+    }
+
+    @Bean
+    public Job CGWallpaperDownloadJob(Step CGWallpaperDownloadJobStep){
+        return jobBuilderFactory.get("CGWallpaperDownloadJob")
+                .incrementer(new RunIdIncrementer())
+                .flow(CGWallpaperDownloadJobStep)
+                .end()
+                .build();
+    }
+
+    /////////////////////////////////////////////////////////////////////
+
+
 
     /////////////////////////////////////////////////////////////////////
     //Wallpaperswide_Categories

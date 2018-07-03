@@ -5,6 +5,7 @@ import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.crawler.G
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.dao.GameWallpaperCategoriesMapper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaper;
 import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.entity.GameWallpaperCategories;
+import com.example.CrawlerTest.crawler.picture.wallpaper.gamewallpaper.service.GameWallpaperJobService;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -16,27 +17,15 @@ import java.util.List;
 
 public class GameWallpaperReader implements ItemReader<GameWallpaperCategories> {
     @Autowired
-    GameWallpaperCategoriesMapper gameWallpaperCategoriesMapper;
-
-    private int count = 0;
-    private List<GameWallpaperCategories> gameWallpaperCategoriesList = new ArrayList<>();
+    GameWallpaperJobService gameWallpaperJobService;
 
     @Override
     public GameWallpaperCategories read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        if(gameWallpaperCategoriesList.isEmpty()){
-            gameWallpaperCategoriesList.addAll(gameWallpaperCategoriesMapper.selectList(
-                    new EntityWrapper<GameWallpaperCategories>()
-            ));
+        GameWallpaperCategories gameWallpaperCategories = gameWallpaperJobService.readGameWallpaper();
+        if(gameWallpaperCategories != null) {
+            System.out.println(gameWallpaperCategories.getId() + "\t" + gameWallpaperCategories.getTitle());
         }
-
-        if(!gameWallpaperCategoriesList.isEmpty()&&count<gameWallpaperCategoriesList.size()){
-            System.out.println("Process " + (count+1) + " : " + gameWallpaperCategoriesList.get(count).getTitle());
-            return gameWallpaperCategoriesList.get(count++);
-        }else{
-            count = 0;
-            gameWallpaperCategoriesList.clear();
-            return null;
-        }
+        return gameWallpaperCategories;
     }
 
 }

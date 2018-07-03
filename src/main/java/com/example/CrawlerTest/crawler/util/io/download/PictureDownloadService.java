@@ -17,8 +17,10 @@ public class PictureDownloadService {
                 dir.mkdirs();
             }
 
-            URL url=new URL(urlStr);
-            FileUtils.copyURLToFile(url,localFile);
+            if(!localFile.exists()){
+                URL url=new URL(urlStr);
+                FileUtils.copyURLToFile(url,localFile);
+            }
         } catch (IOException e) {
             //System.out.println(urlStr+"\t"+"copyURLToFile failed!");
             PictureDownloadUtil.download(urlStr,filePathName);

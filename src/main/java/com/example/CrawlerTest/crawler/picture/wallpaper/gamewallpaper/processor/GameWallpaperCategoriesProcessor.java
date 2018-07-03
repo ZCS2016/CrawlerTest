@@ -25,7 +25,7 @@ public class GameWallpaperCategoriesProcessor implements ItemProcessor<GameWallp
             if(count==0) {
                 gameWallpaperCategoriesMapper.insert(gameWallpaperCategories);
             }else{
-                System.out.println("GameWallpaperCategories exists! " + gameWallpaperCategories.getTitle());
+                System.out.println("CGWallpaperCategories exists! " + gameWallpaperCategories.getTitle());
             }
         }catch (Exception ex){
             System.out.println(ex.getMessage());
